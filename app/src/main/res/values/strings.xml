@@ -10,4 +10,5 @@
     <string name="posts">Find home</string>
     <string name="profile">My profile</string>
     <string name="logout">Logout</string>
+    <string name="email">email</string>
 </resources>
