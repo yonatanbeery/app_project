@@ -1,4 +1,4 @@
-package com.example.surprisehub.ui.home
+package com.example.homefinder.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

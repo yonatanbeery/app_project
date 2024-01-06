@@ -1,4 +1,4 @@
-package com.example.surprisehub
+package com.example.homefinder
 
 import org.junit.Test
 
