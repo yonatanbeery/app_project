@@ -6,8 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class PostsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
+    private val _text = MutableLiveData<String>("posts page")
+
     val text: LiveData<String> = _text
 }
