@@ -34,21 +34,34 @@
         android:id="@+id/login_btn"
         android:layout_width="165dp"
         android:layout_height="63dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="44dp"
         android:text="Log-in"
-        app:layout_constraintBottom_toTopOf="@+id/signup_message"
+        app:layout_constraintBottom_toTopOf="@+id/signup_link"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/signup_message"
-        android:layout_width="122dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="172dp"
-        android:text="Dont have a user?"
+        android:id="@+id/signup_link"
+        android:layout_width="130dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="204dp"
+        android:text="Don't have a user? "
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.405"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/signup_btn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="204dp"
+        android:text="Sign-up"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/signup_link" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
