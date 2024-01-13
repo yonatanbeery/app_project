@@ -6,13 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".Login">
 
-    <TextView
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/new_username"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="200dp"
+        android:hint="Username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/new_email"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="60dp"
+        android:hint="email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_username" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/new_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_email" />
+
+    <Button
+        android:id="@+id/register_btn"
+        android:layout_width="165dp"
+        android:layout_height="63dp"
+        android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/new_password"
+        app:layout_constraintVertical_bias="0.323" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/sym_def_app_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
