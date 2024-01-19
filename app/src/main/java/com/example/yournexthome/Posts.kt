@@ -2,6 +2,7 @@ package com.example.yournexthome
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,10 @@ class Posts : AppCompatActivity() {
 
         postsListView = findViewById(R.id.postsList)
         postsListView?.adapter = PostsListAdapter(posts)
+
+        postsListView?.setOnItemClickListener { parent, view, position, id ->
+            Log.i("Tag","Row $position was clicked" )
+        }
     }
 
     class PostsListAdapter(val posts: MutableList<Post>?): BaseAdapter() {
@@ -38,6 +43,12 @@ class Posts : AppCompatActivity() {
             var view: View? = null
             if (convertView == null){
                 view = LayoutInflater.from(parent?.context).inflate(R.layout.post_list_row,parent,false)
+                val postCheckBox:CheckBox? = view?.findViewById(R.id.postRowCheckbox)
+                postCheckBox?.setOnClickListener {
+                    (postCheckBox.tag as? Int)?.let { tag ->
+                        posts?.get(tag)?.isChecked = postCheckBox.isChecked
+                    }
+                }
             }
 
             view = view ?: convertView
@@ -46,7 +57,10 @@ class Posts : AppCompatActivity() {
             val postCheckBox: CheckBox? = view?.findViewById(R.id.postRowCheckbox)
             postHeaderText?.text = post?.header
             postDescription?.text = post?.description
-            postCheckBox?.isChecked = post?.isChecked ?: false
+            postCheckBox?.apply {
+                isChecked = post?.isChecked ?: false
+                    tag = position
+            }
 
             return view!!
         }
