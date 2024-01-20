@@ -17,24 +17,9 @@ import com.example.yournexthome.R
 class Posts : AppCompatActivity() {
     private var postsRecyclerView: RecyclerView? = null
     private var posts: MutableList<Post>? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.posts_list)
+    /*override fun onCreate(savedInstanceState: Bundle?) {
 
-        posts = Model.instance.posts
-
-        postsRecyclerView = findViewById(R.id.postsList)
-        postsRecyclerView?.setHasFixedSize(true)
-        postsRecyclerView?.layoutManager = LinearLayoutManager(this)
-
-        val adapter = PostsRecyclerAdapter(posts)
-        adapter.listener = object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                Log.i("Tag", "row $position")
-            }
-        }
-        postsRecyclerView?.adapter = adapter
-    }
+    }*/
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)

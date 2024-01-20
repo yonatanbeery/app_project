@@ -8,9 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.yournexthome.BlueFragment
 import com.example.yournexthome.R
+import com.example.yournexthome.posts.PostsFragment
 
 class Login : AppCompatActivity() {
-    var blueFragment: BlueFragment? = null
+    var blueFragment: PostsFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
@@ -36,7 +37,7 @@ class Login : AppCompatActivity() {
     }
 
     fun displayBottomFragment() {
-        blueFragment = BlueFragment().newInstance("hello")
+        blueFragment = PostsFragment()
         blueFragment?.let {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.add(R.id.bottomFragment, it)
