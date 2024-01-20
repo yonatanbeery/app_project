@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import com.example.yournexthome.BlueFragment
 import com.example.yournexthome.R
 import com.example.yournexthome.posts.PostsFragment
 
