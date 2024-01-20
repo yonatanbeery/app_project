@@ -1,10 +1,12 @@
-package com.example.yournexthome
+package com.example.yournexthome.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import com.example.yournexthome.posts.Posts
+import com.example.yournexthome.R
 
 class Signup : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
