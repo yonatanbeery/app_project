@@ -32,8 +32,7 @@ class LoginFragment : Fragment() {
     }
 
     fun onSignupLinkClicked(view: View) {
-        val intent = Intent(view.context, Signup::class.java)
-        startActivity(intent)
+        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_postsFragment)
     }
 
 }

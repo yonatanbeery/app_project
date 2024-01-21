@@ -13,7 +13,6 @@ class PostViewHolder(itemView: View, listener: Posts.OnItemClickListener?, posts
     var postHeaderText: TextView? = null
     var postDescription: TextView?= null
     var postCheckBox: CheckBox?= null
-    var post: Post? = null
     init {
         postHeaderText = itemView.findViewById(R.id.postHeader)
         postDescription= itemView.findViewById(R.id.postDescription)
@@ -25,7 +24,6 @@ class PostViewHolder(itemView: View, listener: Posts.OnItemClickListener?, posts
         }
 
         itemView.setOnClickListener {
-            Log.i("Tag", "row adapter $adapterPosition")
             listener?.onItemClick(adapterPosition)
         }
     }
