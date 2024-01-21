@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.Navigation
 import com.example.yournexthome.R
 import com.example.yournexthome.posts.Posts
 
@@ -27,8 +28,7 @@ class LoginFragment : Fragment() {
     }
 
     fun onLoginButtonClicked(view: View) {
-        val intent = Intent(view.context, Posts::class.java)
-        startActivity(intent)
+        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_postsFragment)
     }
 
     fun onSignupLinkClicked(view: View) {
