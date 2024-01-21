@@ -1,6 +1,5 @@
 package com.example.yournexthome.auth
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.Navigation
 import com.example.yournexthome.R
-import com.example.yournexthome.posts.Posts
 
 class LoginFragment : Fragment() {
 

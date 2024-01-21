@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_postsFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -44,7 +47,11 @@
         android:id="@+id/postDetailsFragment"
         android:name="com.example.yournexthome.posts.PostDetailsFragment"
         android:label="fragment_post_details"
-        tools:layout="@layout/fragment_post_details" />
+        tools:layout="@layout/fragment_post_details" >
+        <argument
+            android:name="postId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.yournexthome.user.ProfileFragment"
@@ -56,6 +63,9 @@
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -70,15 +80,26 @@
         <action
             android:id="@+id/action_userPostsFragment_to_postEditFragment"
             app:destination="@id/postEditFragment" />
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/postEditFragment"
         android:name="com.example.yournexthome.user.PostEditFragment"
         android:label="fragment_post_edit"
-        tools:layout="@layout/fragment_post_edit" />
+        tools:layout="@layout/fragment_post_edit" >
+        <argument
+            android:name="postId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.example.yournexthome.user.ProfileEditFragment"
         android:label="fragment_profile_edit"
-        tools:layout="@layout/fragment_profile_edit" />
+        tools:layout="@layout/fragment_profile_edit" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
+    </fragment>
 </navigation>

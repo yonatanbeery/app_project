@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yournexthome.Model.Model
@@ -33,6 +34,12 @@ class PostsFragment : Fragment() {
         adapter.listener = object : Posts.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
+                val post = posts?.get(position)
+                post.let {
+                    val action = PostsFragmentDirections.actionPostsFragmentToPostDetailsFragment(postId = position.toString())
+                    Navigation.findNavController(view).navigate(action)
+                }
+
             }
         }
         postsRecyclerView?.adapter = adapter
