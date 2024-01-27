@@ -20,7 +20,6 @@ class PostsFragment : Fragment() {
     private var adapter = PostsRecyclerAdapter(posts)
     private var progressBar:ProgressBar? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,16 +52,6 @@ class PostsFragment : Fragment() {
         }
         postsRecyclerView?.adapter = adapter
         return view
-    }
-
-    companion object {
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PostsFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
     }
 
     override fun onResume() {
