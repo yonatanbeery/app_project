@@ -1,6 +1,12 @@
 package com.example.yournexthome.Model
 
-data class Post(val header: String,
-                val description: String,
-                val postImage:String,
-                var isChecked: Boolean)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Post(
+    @PrimaryKey val id: String,
+    val header: String,
+    val description: String,
+    val postImage:String,
+    var isChecked: Boolean)

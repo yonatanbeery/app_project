@@ -1,6 +1,5 @@
 package com.example.yournexthome.posts
 
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
@@ -8,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
 
-class PostViewHolder(itemView: View, listener: Posts.OnItemClickListener?, posts: MutableList<Post>?): RecyclerView.ViewHolder(itemView){
+class PostViewHolder(itemView: View, listener: PostsRecyclerViewActivity.OnItemClickListener?, posts: List<Post>?): RecyclerView.ViewHolder(itemView){
 
     var postHeaderText: TextView? = null
     var postDescription: TextView?= null
