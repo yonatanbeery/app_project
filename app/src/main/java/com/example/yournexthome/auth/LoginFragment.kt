@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
     }
 
     fun onSignupLinkClicked(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_postsFragment)
+        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment)
     }
-
+    //Navigation.findNavController(view/it).popBackStack(R.id.loginFragment, false)
 }

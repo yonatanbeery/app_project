@@ -7,7 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="?attr/selectableItemBackground"
-    tools:context=".posts.Posts">
+    tools:context=".posts.PostsRecyclerViewActivity">
 
     <ImageView
         android:id="@+id/postImage"
