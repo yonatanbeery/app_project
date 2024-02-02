@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.navigation.Navigation
+import com.example.yournexthome.Model.Model
+import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -18,43 +23,56 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class NewPostFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var cityTextView: TextView? = null
+    private var priceTextView: TextView? = null
+    private var areaSizeTextView: TextView? = null
+    private var bedroomsTextView: TextView? = null
+    private var bathroomsTextView: TextView? = null
+    private var nameTextView: TextView? = null
+    private var phoneTextView: TextView? = null
+    private var freeTextTextView: TextView? = null
+    private var errorMessageTextView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_post, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_new_post, container, false)
+        super.onCreate(savedInstanceState)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NewPostFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NewPostFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        cityTextView = view.findViewById(R.id.city)
+        priceTextView = view.findViewById(R.id.price)
+        areaSizeTextView = view.findViewById(R.id.areaSize)
+        bedroomsTextView = view.findViewById(R.id.bedrooms)
+        bathroomsTextView = view.findViewById(R.id.bathrooms)
+        nameTextView = view.findViewById(R.id.ownerName)
+        phoneTextView = view.findViewById(R.id.phone)
+        freeTextTextView = view.findViewById(R.id.freeText)
+        errorMessageTextView = view.findViewById(R.id.errorMessage)
+
+        val registerBtn: Button = view.findViewById(R.id.post_btn)
+
+        registerBtn.setOnClickListener {
+            val city = cityTextView?.text.toString()
+            val price = priceTextView?.text.toString()
+            val areaSize = areaSizeTextView?.text.toString()
+            val bedrooms = bedroomsTextView?.text.toString()
+            val bathrooms = bathroomsTextView?.text.toString()
+            val name = nameTextView?.text.toString()
+            val phone = phoneTextView?.text.toString()
+            val freeText = freeTextTextView?.text.toString()
+
+            if(city == "" || price == "" || areaSize == "" || bedrooms == "" || bathrooms == "" || name == "" || phone == "") {
+                errorMessageTextView?.text = "Please fill all mandatory values"
+            } else {
+                errorMessageTextView?.text = ""
+                val post = Post(city, price, areaSize, "", false)
+                Model.instance.addPost(post) {
+                    Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
                 }
             }
+        }
+
+        return view
     }
 }

@@ -12,6 +12,9 @@
         android:id="@+id/newPostFragment"
         android:title="New Post" />
     <item
+        android:id="@+id/userPostsFragment"
+        android:title="My posts" />
+    <item
         android:id="@+id/mibtnLogout"
         android:title="Log out" />
 </menu>

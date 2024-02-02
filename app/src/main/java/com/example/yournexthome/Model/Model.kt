@@ -22,7 +22,7 @@ class Model private constructor(){
 
     fun getAllPosts(callback: (List<Post>)-> Unit) {
         executor.execute{
-            Thread.sleep(5000)
+            Thread.sleep(2000)
             val posts = database.PostDao().gatAll()
             mainHandler.post {
                 callback(posts)
