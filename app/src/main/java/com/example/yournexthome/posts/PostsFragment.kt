@@ -29,8 +29,9 @@ class PostsFragment : Fragment() {
         progressBar?.visibility = View.VISIBLE
         super.onCreate(savedInstanceState)
 
-        Model.instance.getAllPosts{
-            posts -> adapter.posts = posts
+        Model.instance.getAllPosts { posts ->
+            this.posts = posts // Update the posts property
+            adapter.posts = posts
             adapter.notifyDataSetChanged()
             progressBar?.visibility = View.GONE
         }
@@ -43,8 +44,8 @@ class PostsFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
                 val post = posts?.get(position)
-                post.let {
-                    val action = PostsFragmentDirections.actionPostsFragmentToPostDetailsFragment(postId = position.toString())
+                post?.let {
+                    val action = PostsFragmentDirections.actionPostsFragmentToPostDetailsFragment(postId = post.id)
                     Navigation.findNavController(view).navigate(action)
                 }
 

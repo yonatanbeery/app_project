@@ -5,7 +5,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
-import com.google.firebase.firestore.persistentCacheSettings
 
 class FirebaseModel {
     var POSTS_COLLECTION_NAME = "posts"
@@ -40,5 +39,26 @@ class FirebaseModel {
                 Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
                 callback()
             }
+    }
+
+    fun getPost(postId: String, callback: (Post?) -> Unit) {
+        db.collection(POSTS_COLLECTION_NAME)
+            .document(postId)
+            .get()
+            .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val documentSnapshot = task.result
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    val post = documentSnapshot.data?.let { Post.fromJSON(it, documentSnapshot.id) }
+                    if (post != null) {
+                        callback(post)
+                    }
+                } else {
+                    callback(null)
+                }
+            } else {
+                callback(null)
+            }
+        }
     }
 }
