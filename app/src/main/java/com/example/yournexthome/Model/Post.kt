@@ -15,6 +15,20 @@ data class Post(
     val phone: String,
     val freeText: String) {
 
+    companion object{
+        fun fromJSON(json:Map<String, Any>, id: String):Post {
+            val city = json["city"].toString()
+            val price = json["price"].toString()
+            val areaSize = json["areaSize"].toString()
+            val bedrooms = json["bedrooms"].toString()
+            val bathrooms = json["bathrooms"].toString()
+            val name = json["name"].toString()
+            val phone = json["phone"].toString()
+            val freeText = json["freeText"].toString()
+            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText)
+        }
+    }
+
     val json:Map<String, Any> get() {
         return hashMapOf(
             "city" to city,

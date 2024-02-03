@@ -25,17 +25,7 @@ class FirebaseModel {
                 true -> {
                     val posts: MutableList<Post> = mutableListOf()
                     for (json in it.result) {
-                        val city = json.data.get("city").toString()
-                        val price = json.data.get("price").toString()
-                        val areaSize = json.data.get("areaSize").toString()
-                        val bedrooms = json.data.get("bedrooms").toString()
-                        val bathrooms = json.data.get("bathrooms").toString()
-                        val name = json.data.get("name").toString()
-                        val phone = json.data.get("phone").toString()
-                        val freeText = json.data.get("freeText").toString()
-
-                        val post = Post(json.id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText)
-                        posts.add(post)
+                        posts.add(Post.fromJSON(json.data, json.id))
                     }
                     callback(posts)
                 } false -> callback(listOf())
