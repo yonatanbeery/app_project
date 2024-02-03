@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "673439569784",
+    "project_id": "home-finder-410315",
+    "storage_bucket": "home-finder-410315.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673439569784:android:72e4a01d3cc3d7693bda8d",
+        "android_client_info": {
+          "package_name": "com.example.yournexthome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673439569784-f3vannd084rml3iuen6peammjbrm172g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjUVjMRy5uBZGn8PCB7jbOOAmyyGsnP9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673439569784-f3vannd084rml3iuen6peammjbrm172g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
