@@ -68,7 +68,7 @@ class NewPostFragment : Fragment() {
                 errorMessageTextView?.text = ""
                 val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText)
                 Model.instance.addPost(post) {
-                    Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
+                    Navigation.findNavController(view).navigate(R.id.action_global_postsFragment)
                 }
             }
         }
