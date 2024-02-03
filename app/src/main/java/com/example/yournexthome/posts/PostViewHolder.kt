@@ -17,22 +17,13 @@ class PostViewHolder(itemView: View, listener: PostsRecyclerViewActivity.OnItemC
         postDescription= itemView.findViewById(R.id.postDescription)
         postCheckBox = itemView.findViewById(R.id.postRowCheckbox)
 
-        postCheckBox!!.setOnClickListener {
-            val post = posts?.get(adapterPosition)
-            post?.isChecked = postCheckBox?.isChecked ?: false
-        }
-
         itemView.setOnClickListener {
             listener?.onItemClick(adapterPosition)
         }
     }
 
     fun bind(post: Post?, position: Int) {
-        postHeaderText?.text = post?.header
-        postDescription?.text = post?.description
-        postCheckBox?.apply {
-            isChecked = post?.isChecked ?: false
-            tag = position
-        }
+        postHeaderText?.text = post?.name
+        postDescription?.text = post?.city
     }
 }
