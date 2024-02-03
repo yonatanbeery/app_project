@@ -43,12 +43,12 @@ class RegisterFragment : Fragment() {
             val username = usernameTextView?.text.toString()
             val password = passwordTextView?.text.toString()
             val confirmedPassword = confirmPasswordTextView?.text.toString()
-            if (password == confirmedPassword) {
+            /*if (password == confirmedPassword) {
                 val post = Post(username, username, password, "", false)
                 Model.instance.addPost(post) {
                     Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
                 }
-            }
+            }*/
         }
 
         return view

@@ -6,7 +6,11 @@ import androidx.room.PrimaryKey
 @Entity
 data class Post(
     @PrimaryKey val id: String,
-    val header: String,
-    val description: String,
-    val postImage:String,
-    var isChecked: Boolean)
+    val city: String,
+    val price: Int,
+    val areaSize: Int,
+    val bedrooms: Int,
+    val bathrooms: Int,
+    val name: String,
+    val phone: String,
+    val freeText: String)
