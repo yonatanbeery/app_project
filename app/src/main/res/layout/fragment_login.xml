@@ -8,17 +8,17 @@ tools:context=".auth.LoginFragment">
 
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/newUsername"
+        android:id="@+id/sgnEmail"
         android:layout_width="208dp"
         android:layout_height="48dp"
         android:layout_marginBottom="30dp"
-        android:hint="Username"
-        app:layout_constraintBottom_toTopOf="@+id/newPassword"
+        android:hint="Email"
+        app:layout_constraintBottom_toTopOf="@+id/sgnPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/newPassword"
+        android:id="@+id/sgnPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -62,5 +62,4 @@ tools:context=".auth.LoginFragment">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.675"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
