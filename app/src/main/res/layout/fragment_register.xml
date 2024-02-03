@@ -10,7 +10,7 @@
         android:id="@+id/newUserImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +23,16 @@
         android:layout_height="48dp"
         android:layout_marginBottom="30dp"
         android:hint="Username"
+        app:layout_constraintBottom_toTopOf="@+id/newEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/newEmail"
+        android:layout_width="208dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="30dp"
+        android:hint="Email"
         app:layout_constraintBottom_toTopOf="@+id/newPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -60,4 +70,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="250dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:text=""
+        android:textColor="@color/design_default_color_error"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
