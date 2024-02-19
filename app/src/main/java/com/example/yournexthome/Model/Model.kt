@@ -3,9 +3,7 @@ package com.example.yournexthome.Model
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import com.example.yournexthome.dao.AppLocalDB
-import kotlinx.coroutines.delay
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 
 class Model private constructor(){
     private var database = AppLocalDB.db
@@ -34,6 +32,26 @@ class Model private constructor(){
 
     fun addPost(post: Post, callback: ()-> Unit) {
         firebaseModel.addPost(post, callback)
+//        executor.execute{
+//            database.PostDao().insert(post)
+//            mainHandler.post {
+//                callback()
+//            }
+//        }
+    }
+
+    fun getPost(postId: String, callback: (Post?)-> Unit) {
+        firebaseModel.getPost(postId, callback)
+//        executor.execute{
+//            database.PostDao().insert(post)
+//            mainHandler.post {
+//                callback()
+//            }
+//        }
+    }
+
+    fun getFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>)-> Unit) {
+        firebaseModel.getFilteredPosts(city, minPrice, maxPrice, minBeds, minBaths, callback)
 //        executor.execute{
 //            database.PostDao().insert(post)
 //            mainHandler.post {
