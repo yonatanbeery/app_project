@@ -2,6 +2,7 @@ package com.example.yournexthome.Model
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
@@ -46,19 +47,60 @@ class FirebaseModel {
             .document(postId)
             .get()
             .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val documentSnapshot = task.result
-                if (documentSnapshot != null && documentSnapshot.exists()) {
-                    val post = documentSnapshot.data?.let { Post.fromJSON(it, documentSnapshot.id) }
-                    if (post != null) {
-                        callback(post)
+                if (task.isSuccessful) {
+                    val documentSnapshot = task.result
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        val post = documentSnapshot.data?.let { Post.fromJSON(it, documentSnapshot.id) }
+                        if (post != null) {
+                            callback(post)
+                        }
+                    } else {
+                        callback(null)
+
                     }
                 } else {
                     callback(null)
                 }
-            } else {
-                callback(null)
+
+            }
+    }
+
+        fun getFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
+            try {
+                var query: Query = db.collection(POSTS_COLLECTION_NAME)
+                if (city != null) {
+                    query = query.whereEqualTo("city", city)
+                }
+                if (minPrice != null) {
+                    query = query.whereGreaterThanOrEqualTo("price", minPrice)
+                }
+                if (maxPrice != null) {
+                    query = query.whereLessThanOrEqualTo("price", maxPrice)
+                }
+
+                query.get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val posts: MutableList<Post> = mutableListOf()
+                            for (document in task.result!!) {
+                                val bedrooms = document.data["bedrooms"] as? Long
+                                val bathrooms = document.data["bathrooms"] as? Long
+
+                                if (bedrooms != null && bathrooms != null &&
+                                    (minBeds == null || bedrooms >= minBeds) &&
+                                    (minBaths == null || bathrooms >= minBaths)
+                                ) {
+                                    posts.add(Post.fromJSON(document.data, document.id))
+                                }
+                            }
+                            callback(posts)
+                        } else {
+                            callback(emptyList())
+                        }
+                    }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
-    }
+
 }
