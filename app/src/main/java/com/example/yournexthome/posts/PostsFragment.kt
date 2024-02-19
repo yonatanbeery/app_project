@@ -45,12 +45,7 @@ class PostsFragment : Fragment() {
         etBathsSearch = view.findViewById(R.id.etBathsSearch)
         btnSearch = view.findViewById(R.id.btnSearch)
 
-        Model.instance.getAllPosts { posts ->
-            this.posts = posts
-            adapter.posts = posts
-            adapter.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
+        getPosts()
 
         postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
         postsRecyclerView?.setHasFixedSize(true)
@@ -70,13 +65,13 @@ class PostsFragment : Fragment() {
         postsRecyclerView?.adapter = adapter
 
         btnSearch.setOnClickListener {
-            handleSearch()
+            getPosts()
         }
 
         return view
     }
 
-    private fun handleSearch() {
+    private fun getPosts() {
         val city = if (etCitySearch.text.isNullOrBlank()) {
             null
         } else {
@@ -88,8 +83,10 @@ class PostsFragment : Fragment() {
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
         Model.instance.getFilteredPosts(city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
+            this.posts = filteredPosts
             adapter.posts = filteredPosts
             adapter.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
         }
     }
 
@@ -97,10 +94,6 @@ class PostsFragment : Fragment() {
         super.onResume()
         progressBar?.visibility = View.VISIBLE
 
-        Model.instance.getAllPosts {posts ->
-            adapter.posts = posts
-            adapter.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
+        getPosts()
     }
 }
