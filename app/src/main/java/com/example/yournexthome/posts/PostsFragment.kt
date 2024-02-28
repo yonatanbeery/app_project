@@ -5,16 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 
 class PostsFragment : Fragment() {
     private var postsRecyclerView: RecyclerView? = null
@@ -22,13 +28,18 @@ class PostsFragment : Fragment() {
     private var adapter = PostsRecyclerAdapter(posts)
     private var progressBar:ProgressBar? = null
 
-    private lateinit var etCitySearch: EditText
+    private lateinit var spinnerCity: SearchableSpinner
     private lateinit var etMinPriceSearch: EditText
     private lateinit var etMaxPriceSearch: EditText
     private lateinit var etBedsSearch: EditText
     private lateinit var etBathsSearch: EditText
     private lateinit var btnSearch: Button
+    private lateinit var cities: List<City>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        cities = fetchCitiesFromApi()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,19 +49,17 @@ class PostsFragment : Fragment() {
         progressBar?.visibility = View.VISIBLE
         super.onCreate(savedInstanceState)
 
-        etCitySearch = view.findViewById(R.id.etCitySearch)
+        spinnerCity = view.findViewById(R.id.spinnerCity)
         etMinPriceSearch = view.findViewById(R.id.etMinPriceSearch)
         etMaxPriceSearch = view.findViewById(R.id.etMaxPriceSearch)
         etBedsSearch = view.findViewById(R.id.etBedsSearch)
         etBathsSearch = view.findViewById(R.id.etBathsSearch)
         btnSearch = view.findViewById(R.id.btnSearch)
 
-        Model.instance.getAllPosts { posts ->
-            this.posts = posts
-            adapter.posts = posts
-            adapter.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
+        setupCityDropdown()
+        setupCitySelectionListener()
+
+        getPosts()
 
         postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
         postsRecyclerView?.setHasFixedSize(true)
@@ -70,17 +79,53 @@ class PostsFragment : Fragment() {
         postsRecyclerView?.adapter = adapter
 
         btnSearch.setOnClickListener {
-            handleSearch()
+            getPosts()
         }
 
         return view
     }
+    private fun setupCityDropdown() {
+        val blankOption = getString(R.string.blank_option)
+        val mutableCityNames = cities.map { it.name }.toMutableList()
+        mutableCityNames.add(0, blankOption)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mutableCityNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCity.adapter = adapter
+        spinnerCity.setTitle(getString(R.string.select_city))
+        spinnerCity.setPositiveButton(getString(R.string.close))
+        spinnerCity.setSelection(0) // Select the blank option by default
+    }
 
-    private fun handleSearch() {
-        val city = if (etCitySearch.text.isNullOrBlank()) {
+    private fun setupCitySelectionListener() {
+        spinnerCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            val selectedCity = parent?.getItemAtPosition(position) as String
+                    if (selectedCity != getString(R.string.blank_option)) {
+                        // Handle selected city=
+                        Log.d("PostsFragment", "Selected city: $selectedCity")
+                    } else {
+                Log.d("PostsFragment", "No city selected")
+            }
+        }
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            // Handle nothing selected
+            Log.d("PostsFragment", "No city selected")
+            }
+        }
+    }
+    private fun fetchCitiesFromApi(): List<City> {
+        return listOf(
+            City("tel aviv"),
+            City("Los Angeles"),
+            City("Chicago"),
+            City("Houston"),
+        )
+    }
+    private fun getPosts() {
+        val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
             null
         } else {
-            etCitySearch.text.toString()
+            spinnerCity.selectedItem as String
         }
         val minPrice = etMinPriceSearch.text.toString().toIntOrNull()
         val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
@@ -88,8 +133,10 @@ class PostsFragment : Fragment() {
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
         Model.instance.getFilteredPosts(city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
+            this.posts = filteredPosts
             adapter.posts = filteredPosts
             adapter.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
         }
     }
 
@@ -97,10 +144,6 @@ class PostsFragment : Fragment() {
         super.onResume()
         progressBar?.visibility = View.VISIBLE
 
-        Model.instance.getAllPosts {posts ->
-            adapter.posts = posts
-            adapter.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
+        getPosts()
     }
 }

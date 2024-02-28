@@ -56,10 +56,12 @@ class FirebaseModel {
                         }
                     } else {
                         callback(null)
+
                     }
                 } else {
                     callback(null)
                 }
+
             }
     }
 
