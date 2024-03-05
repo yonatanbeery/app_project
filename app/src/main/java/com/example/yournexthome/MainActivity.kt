@@ -7,9 +7,12 @@ import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import base.ApiClient
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import kotlinx.coroutines.runBlocking
+
 
 class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
         val currentUser = auth.currentUser
         if (currentUser != null) {
+            loadCities()
             navController?.navigate(R.id.action_global_postsFragment)
         }
     }
@@ -55,6 +59,21 @@ class MainActivity : AppCompatActivity() {
                     navController?.let{ NavigationUI.onNavDestinationSelected(item, it)} ?: false
                 }
                 true
+            }
+        }
+    }
+
+    private fun loadCities() {
+        runBlocking {
+            try {
+                val response = ApiClient.cityService.getCities(
+                    resourceId = "d4901968-dad3-4845-a9b0-a57d027f11ab",
+                    limit = 32000
+                )
+                // Handle the response here
+                println(response)
+            } catch (e: Exception) {
+                println("Error fetching data: $e")
             }
         }
     }
