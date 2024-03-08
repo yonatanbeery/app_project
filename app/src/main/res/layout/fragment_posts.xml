@@ -9,7 +9,7 @@
     tools:context=".posts.PostsFragment">
 
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/spinnerCity"
+        android:id="@+id/spinnerCityPosts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
         app:layout_constraintEnd_toStartOf="@+id/etBedsSearch"
         app:layout_constraintStart_toEndOf="@+id/etMinPriceSearch"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
 
     <EditText
         android:id="@+id/etBathsSearch"
@@ -52,7 +52,7 @@
         app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
         app:layout_constraintEnd_toStartOf="@+id/btnSearch"
         app:layout_constraintStart_toEndOf="@+id/etBedsSearch"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
 
     <EditText
         android:id="@+id/etBedsSearch"
@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
         app:layout_constraintEnd_toStartOf="@+id/etBathsSearch"
         app:layout_constraintStart_toEndOf="@+id/etMaxPriceSearch"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
 
     <EditText
         android:id="@+id/etMinPriceSearch"
@@ -84,7 +84,7 @@
         app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
         app:layout_constraintEnd_toStartOf="@+id/etMaxPriceSearch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
 
     <Button
         android:id="@+id/btnSearch"
@@ -96,7 +96,7 @@
         android:text="Search"
         app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
 
     <!-- RecyclerView Section -->
 

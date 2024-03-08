@@ -4,19 +4,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import base.ApiClient
+import com.example.yournexthome.Model.City
+import com.example.yournexthome.Repository.CityRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
     lateinit var auth: FirebaseAuth
+    private lateinit var cityRepository: CityRepository
+    lateinit var cities: List<City> // Globally accessible list of cities
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +33,15 @@ class MainActivity : AppCompatActivity() {
         }
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            loadCities()
-            navController?.navigate(R.id.action_global_postsFragment)
+            cityRepository = CityRepository()
+            val resourceId = "d4901968-dad3-4845-a9b0-a57d027f11ab"
+            val limit = 32000
+
+            cityRepository.getCities(resourceId, limit) { cities ->
+                this.cities = cities
+
+                navController?.navigate(R.id.action_global_postsFragment)
+            }
         }
     }
 
@@ -59,21 +69,6 @@ class MainActivity : AppCompatActivity() {
                     navController?.let{ NavigationUI.onNavDestinationSelected(item, it)} ?: false
                 }
                 true
-            }
-        }
-    }
-
-    private fun loadCities() {
-        runBlocking {
-            try {
-                val response = ApiClient.cityService.getCities(
-                    resourceId = "d4901968-dad3-4845-a9b0-a57d027f11ab",
-                    limit = 32000
-                )
-                // Handle the response here
-                println(response)
-            } catch (e: Exception) {
-                println("Error fetching data: $e")
             }
         }
     }

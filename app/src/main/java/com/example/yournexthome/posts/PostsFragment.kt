@@ -1,5 +1,6 @@
 package com.example.yournexthome.posts
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yournexthome.MainActivity
 import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
@@ -38,7 +38,7 @@ class PostsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        cities = fetchCitiesFromApi()
+        cities = (activity as MainActivity).cities
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +49,7 @@ class PostsFragment : Fragment() {
         progressBar?.visibility = View.VISIBLE
         super.onCreate(savedInstanceState)
 
-        spinnerCity = view.findViewById(R.id.spinnerCity)
+        spinnerCity = view.findViewById(R.id.spinnerCityPosts)
         etMinPriceSearch = view.findViewById(R.id.etMinPriceSearch)
         etMaxPriceSearch = view.findViewById(R.id.etMaxPriceSearch)
         etBedsSearch = view.findViewById(R.id.etBedsSearch)
@@ -86,14 +86,14 @@ class PostsFragment : Fragment() {
     }
     private fun setupCityDropdown() {
         val blankOption = getString(R.string.blank_option)
-        val mutableCityNames = cities.map { it.name }.toMutableList()
+        val mutableCityNames = cities.map { it.שם_ישוב_לועזי }.toMutableList()
         mutableCityNames.add(0, blankOption)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mutableCityNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerCity.adapter = adapter
         spinnerCity.setTitle(getString(R.string.select_city))
         spinnerCity.setPositiveButton(getString(R.string.close))
-        spinnerCity.setSelection(0) // Select the blank option by default
+        spinnerCity.setSelection(0)
     }
 
     private fun setupCitySelectionListener() {
@@ -108,19 +108,11 @@ class PostsFragment : Fragment() {
             }
         }
         override fun onNothingSelected(parent: AdapterView<*>?) {
-            // Handle nothing selected
             Log.d("PostsFragment", "No city selected")
             }
         }
     }
-    private fun fetchCitiesFromApi(): List<City> {
-        return listOf(
-            City("tel aviv"),
-            City("Los Angeles"),
-            City("Chicago"),
-            City("Houston"),
-        )
-    }
+
     private fun getPosts() {
         val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
             null
