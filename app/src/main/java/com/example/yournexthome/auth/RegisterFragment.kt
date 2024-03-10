@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
+import com.example.yournexthome.Model.User
 import com.example.yournexthome.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -66,7 +67,10 @@ class RegisterFragment : Fragment() {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("TAG", "createUserWithEmail:success")
-                    Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                    val user = User(email, username, "")
+                    Model.instance.addUser(user) {
+                        Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                    }
                 } else {
                     Log.w("TAG", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(

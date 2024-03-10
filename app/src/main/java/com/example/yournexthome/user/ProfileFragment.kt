@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
+import com.example.yournexthome.Model.Model
 import com.example.yournexthome.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -40,7 +41,14 @@ class ProfileFragment : Fragment() {
         errorMessageTextView = view.findViewById(R.id.errorMessage)
 
         val user = Firebase.auth.currentUser
-        usernameTextView?.text = user?.email
+        emailTextView?.text = user?.email
+        passwordTextView?.text = "####"
+        confirmPasswordTextView?.text = "####"
+
+        Model.instance.getUserDetails(user?.email ?: "") {user ->
+            Log.i("profile", user?.username.toString())
+            usernameTextView?.text = user?.username
+        }
     }
 
     fun onUpdateUserButtonClicked(view: View) {

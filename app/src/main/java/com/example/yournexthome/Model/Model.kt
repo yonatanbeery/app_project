@@ -59,4 +59,12 @@ class Model private constructor(){
 //            }
 //        }
     }
+
+    fun addUser(user: User, callback: ()-> Unit) {
+        firebaseModel.addUser(user, callback)
+    }
+
+    fun getUserDetails(email: String, callback: (User?)-> Unit) {
+        firebaseModel.getUser(email, callback)
+    }
 }

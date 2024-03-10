@@ -9,6 +9,7 @@ import com.google.firebase.firestore.memoryCacheSettings
 
 class FirebaseModel {
     var POSTS_COLLECTION_NAME = "posts"
+    var USERS_COLLECTION_NAME = "users"
     val db = Firebase.firestore
 
     init {
@@ -62,6 +63,38 @@ class FirebaseModel {
                     callback(null)
                 }
 
+            }
+    }
+
+    fun getUser(email: String, callback: (User?) -> Unit) {
+        db.collection(USERS_COLLECTION_NAME)
+            .whereEqualTo("email", email)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val documentSnapshot = task.result.documents[0]
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        val user = documentSnapshot.data?.let { User.fromJSON(it) }
+                        if (user != null) {
+                            callback(user)
+                        }
+                    } else {
+                        callback(null)
+
+                    }
+                } else {
+                    callback(null)
+                }
+
+            }
+    }
+
+    fun addUser(user: User, callback: ()-> Unit) {
+        db.collection(USERS_COLLECTION_NAME)
+            .add(user.json)
+            .addOnSuccessListener { documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+                callback()
             }
     }
 
