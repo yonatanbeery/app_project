@@ -67,7 +67,7 @@ class RegisterFragment : Fragment() {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("TAG", "createUserWithEmail:success")
-                    val user = User(email, username, "")
+                    val user = User("",email, username, "")
                     Model.instance.addUser(user) {
                         Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
                     }

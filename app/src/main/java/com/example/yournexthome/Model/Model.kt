@@ -67,4 +67,8 @@ class Model private constructor(){
     fun getUserDetails(email: String, callback: (User?)-> Unit) {
         firebaseModel.getUser(email, callback)
     }
+
+    fun updateUser(user: User, callback: ()-> Unit) {
+        firebaseModel.updateUser(user, callback)
+    }
 }

@@ -11,11 +11,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.yournexthome.Model.Model
+import com.example.yournexthome.Model.User
 import com.example.yournexthome.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
 class ProfileFragment : Fragment() {
+    private var userProfile: User? = null
     private var usernameTextView: TextView? = null
     private var emailTextView: TextView? = null
     private var passwordTextView: TextView? = null
@@ -47,11 +49,23 @@ class ProfileFragment : Fragment() {
 
         Model.instance.getUserDetails(user?.email ?: "") {user ->
             Log.i("profile", user?.username.toString())
+            userProfile = user
             usernameTextView?.text = user?.username
         }
     }
 
     fun onUpdateUserButtonClicked(view: View) {
-        //todo update user settings
+        val user = userProfile
+        if (user != null && user.username != usernameTextView?.text) {
+            user.username = usernameTextView?.text.toString()
+            Model.instance.updateUser(user) {
+                Log.i("TAG", "updated user details" + user.toString())
+                Toast.makeText(
+                    view.context,
+                    "updated details successfully.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        }
     }
 }

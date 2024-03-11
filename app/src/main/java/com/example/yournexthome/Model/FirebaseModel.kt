@@ -74,7 +74,7 @@ class FirebaseModel {
                 if (task.isSuccessful) {
                     val documentSnapshot = task.result.documents[0]
                     if (documentSnapshot != null && documentSnapshot.exists()) {
-                        val user = documentSnapshot.data?.let { User.fromJSON(it) }
+                        val user = documentSnapshot.data?.let { User.fromJSON(it, documentSnapshot.id) }
                         if (user != null) {
                             callback(user)
                         }
@@ -94,6 +94,18 @@ class FirebaseModel {
             .add(user.json)
             .addOnSuccessListener { documentReference ->
                 Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+                callback()
+            }
+    }
+
+    fun updateUser(user: User, callback: ()-> Unit) {
+        Log.i("USER", "updating user" + user.toString())
+        db.collection(USERS_COLLECTION_NAME)
+            .document(user.id)
+            .update(mapOf(
+                "username" to user.username,
+            ))
+            .addOnSuccessListener { documentReference ->
                 callback()
             }
     }
