@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.navigation.Navigation
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.User
 import com.example.yournexthome.R
 import com.google.firebase.Firebase
+import com.google.firebase.app
 import com.google.firebase.auth.auth
 
 class ProfileFragment : Fragment() {
@@ -23,6 +23,7 @@ class ProfileFragment : Fragment() {
     private var passwordTextView: TextView? = null
     private var confirmPasswordTextView: TextView? = null
     private var errorMessageTextView: TextView? = null
+    val firebaseUser = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,30 +43,57 @@ class ProfileFragment : Fragment() {
         confirmPasswordTextView = view.findViewById(R.id.confirmNewPassword)
         errorMessageTextView = view.findViewById(R.id.errorMessage)
 
-        val user = Firebase.auth.currentUser
-        emailTextView?.text = user?.email
+        emailTextView?.text = firebaseUser?.email
         passwordTextView?.text = "####"
         confirmPasswordTextView?.text = "####"
 
-        Model.instance.getUserDetails(user?.email ?: "") {user ->
-            Log.i("profile", user?.username.toString())
-            userProfile = user
-            usernameTextView?.text = user?.username
+        try {
+            Model.instance.getUserDetails(firebaseUser?.email ?: "") { user ->
+                userProfile = user
+                usernameTextView?.text = user?.username
+            }
+        } catch (e: Throwable) {
+            errorMessageTextView?.text = "לא ניתן לשלוף פרטי משתמש"
         }
     }
 
     fun onUpdateUserButtonClicked(view: View) {
         val user = userProfile
-        if (user != null && user.username != usernameTextView?.text) {
-            user.username = usernameTextView?.text.toString()
-            Model.instance.updateUser(user) {
-                Log.i("TAG", "updated user details" + user.toString())
-                Toast.makeText(
-                    view.context,
-                    "updated details successfully.",
-                    Toast.LENGTH_SHORT,
-                ).show()
+        if (passwordTextView?.text.toString() != confirmPasswordTextView?.text.toString()) {
+            errorMessageTextView?.text = "passwords mismatched"
+        }
+        else if (user != null) {
+            if (usernameTextView?.text?.toString() != user.username) {
+                user.username = usernameTextView?.text.toString()
+                Model.instance.updateUser(user) {
+                    showSuccessMessage(view)
+                }
+                Log.i("TAG", "updated user username / picture")
+            }
+            if (passwordTextView?.text.toString() != "####") {
+                firebaseUser!!.updatePassword(passwordTextView?.text.toString())
+                    .addOnCompleteListener{
+                        task ->
+                    if (task.isSuccessful) {
+                        showSuccessMessage(view)
+                    } else {
+                        Toast.makeText(
+                            view.context,
+                            task.exception?.message,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
             }
         }
+    }
+
+    fun showSuccessMessage(view: View) {
+        errorMessageTextView?.text = ""
+        Toast.makeText(
+            view.context,
+            "updated details successfully.",
+            Toast.LENGTH_SHORT,
+        ).show()
     }
 }
