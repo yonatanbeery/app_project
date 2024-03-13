@@ -41,7 +41,7 @@ class Model private constructor(){
     }
 
     fun updatePost(post: Post, callback: ()-> Unit) {
-        firebaseModel.addPost(post, callback)
+        firebaseModel.updatePost(post, callback)
     }
 
     fun getPost(postId: String, callback: (Post?)-> Unit) {

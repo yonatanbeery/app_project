@@ -43,6 +43,24 @@ class FirebaseModel {
             }
     }
 
+    fun updatePost(post: Post, callback: ()-> Unit) {
+        db.collection(POSTS_COLLECTION_NAME)
+            .document(post.id)
+            .update(mapOf(
+                "city" to post.city,
+                "price" to post.price,
+                "areaSize" to post.areaSize,
+                "bedrooms" to post.bedrooms,
+                "bathrooms" to post.bathrooms,
+                "name" to post.name,
+                "phone" to post.phone,
+                "freeText" to post.freeText
+            ))
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+    }
+
     fun getPost(postId: String, callback: (Post?) -> Unit) {
         db.collection(POSTS_COLLECTION_NAME)
             .document(postId)

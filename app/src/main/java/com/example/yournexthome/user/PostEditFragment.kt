@@ -82,7 +82,6 @@ class PostEditFragment : Fragment() {
     fun setCitySpinnerValue(postCity: String) {
         for (city in cities) {
             if(city.שם_ישוב_לועזי == postCity) {
-                Log.i("city", city.שם_ישוב_לועזי)
                 citySpinner.setSelection(cities.indexOf(city) + 1)
             }
         }
