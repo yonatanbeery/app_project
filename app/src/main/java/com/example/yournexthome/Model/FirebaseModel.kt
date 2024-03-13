@@ -110,7 +110,7 @@ class FirebaseModel {
             }
     }
 
-        fun getFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
+        fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
             try {
                 var query: Query = db.collection(POSTS_COLLECTION_NAME)
                 if (city != null) {
@@ -121,6 +121,10 @@ class FirebaseModel {
                 }
                 if (maxPrice != null) {
                     query = query.whereLessThanOrEqualTo("price", maxPrice)
+                }
+
+                if (creatorId != "") {
+                    query = query.whereEqualTo("creatorId", creatorId)
                 }
 
                 query.get()

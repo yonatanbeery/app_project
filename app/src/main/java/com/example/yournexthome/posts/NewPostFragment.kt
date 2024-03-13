@@ -16,10 +16,13 @@ import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 
 class NewPostFragment : Fragment() {
     //private var cityTextView: TextView? = null
+    val firebaseUser = Firebase.auth.currentUser
     private lateinit var citySpinner: SearchableSpinner
     private var priceTextView: TextView? = null
     private var areaSizeTextView: TextView? = null
@@ -75,7 +78,7 @@ class NewPostFragment : Fragment() {
                 errorMessageTextView?.text = "Please fill all mandatory values"
             } else {
                 errorMessageTextView?.text = ""
-                val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText)
+                val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, firebaseUser?.uid ?: "")
                 Model.instance.addPost(post) {
                     Navigation.findNavController(view).navigate(R.id.action_global_postsFragment)
                 }
