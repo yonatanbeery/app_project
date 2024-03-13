@@ -40,6 +40,10 @@ class Model private constructor(){
 //        }
     }
 
+    fun updatePost(post: Post, callback: ()-> Unit) {
+        firebaseModel.addPost(post, callback)
+    }
+
     fun getPost(postId: String, callback: (Post?)-> Unit) {
         firebaseModel.getPost(postId, callback)
 //        executor.execute{

@@ -76,7 +76,7 @@ class UserPostsFragment : Fragment() {
                 Log.i("Tag", "row $position")
                 val post = posts?.get(position)
                 post?.let {
-                    val action = PostsFragmentDirections.actionPostsFragmentToPostDetailsFragment(postId = post.id)
+                    val action = UserPostsFragmentDirections.actionUserPostsFragmentToPostEditFragment(postId = post.id)
                     Navigation.findNavController(view).navigate(action)
                 }
 
