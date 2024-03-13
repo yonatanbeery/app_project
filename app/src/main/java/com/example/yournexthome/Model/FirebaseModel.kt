@@ -43,6 +43,24 @@ class FirebaseModel {
             }
     }
 
+    fun updatePost(post: Post, callback: ()-> Unit) {
+        db.collection(POSTS_COLLECTION_NAME)
+            .document(post.id)
+            .update(mapOf(
+                "city" to post.city,
+                "price" to post.price,
+                "areaSize" to post.areaSize,
+                "bedrooms" to post.bedrooms,
+                "bathrooms" to post.bathrooms,
+                "name" to post.name,
+                "phone" to post.phone,
+                "freeText" to post.freeText
+            ))
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+    }
+
     fun getPost(postId: String, callback: (Post?) -> Unit) {
         db.collection(POSTS_COLLECTION_NAME)
             .document(postId)
@@ -110,7 +128,7 @@ class FirebaseModel {
             }
     }
 
-        fun getFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
+        fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
             try {
                 var query: Query = db.collection(POSTS_COLLECTION_NAME)
                 if (city != null) {
@@ -121,6 +139,10 @@ class FirebaseModel {
                 }
                 if (maxPrice != null) {
                     query = query.whereLessThanOrEqualTo("price", maxPrice)
+                }
+
+                if (creatorId != "") {
+                    query = query.whereEqualTo("creatorId", creatorId)
                 }
 
                 query.get()

@@ -40,6 +40,10 @@ class Model private constructor(){
 //        }
     }
 
+    fun updatePost(post: Post, callback: ()-> Unit) {
+        firebaseModel.updatePost(post, callback)
+    }
+
     fun getPost(postId: String, callback: (Post?)-> Unit) {
         firebaseModel.getPost(postId, callback)
 //        executor.execute{
@@ -50,8 +54,8 @@ class Model private constructor(){
 //        }
     }
 
-    fun getFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>)-> Unit) {
-        firebaseModel.getFilteredPosts(city, minPrice, maxPrice, minBeds, minBaths, callback)
+    fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>)-> Unit) {
+            firebaseModel.getFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths, callback)
 //        executor.execute{
 //            database.PostDao().insert(post)
 //            mainHandler.post {

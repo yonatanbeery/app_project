@@ -1,60 +1,147 @@
 package com.example.yournexthome.user
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.yournexthome.MainActivity
+import com.example.yournexthome.Model.City
+import com.example.yournexthome.Model.Model
+import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
+import com.example.yournexthome.posts.PostsFragmentDirections
+import com.example.yournexthome.posts.PostsRecyclerAdapter
+import com.example.yournexthome.posts.PostsRecyclerViewActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UserPostsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UserPostsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    val firebaseUser = Firebase.auth.currentUser
+
+    private var postsRecyclerView: RecyclerView? = null
+    private var posts: List<Post>? = null
+    private var adapter = PostsRecyclerAdapter(posts)
+    private var progressBar: ProgressBar? = null
+
+    private lateinit var spinnerCity: SearchableSpinner
+    private lateinit var etMinPriceSearch: EditText
+    private lateinit var etMaxPriceSearch: EditText
+    private lateinit var etBedsSearch: EditText
+    private lateinit var etBathsSearch: EditText
+    private lateinit var btnSearch: Button
+    private lateinit var cities: List<City>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        cities = (activity as MainActivity).cities
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_posts, container, false)
+        val view = inflater.inflate(R.layout.fragment_posts, container, false)
+        progressBar = view.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.VISIBLE
+        super.onCreate(savedInstanceState)
+
+        spinnerCity = view.findViewById(R.id.spinnerCityPosts)
+        etMinPriceSearch = view.findViewById(R.id.etMinPriceSearch)
+        etMaxPriceSearch = view.findViewById(R.id.etMaxPriceSearch)
+        etBedsSearch = view.findViewById(R.id.etBedsSearch)
+        etBathsSearch = view.findViewById(R.id.etBathsSearch)
+        btnSearch = view.findViewById(R.id.btnSearch)
+
+        setupCityDropdown()
+        setupCitySelectionListener()
+
+        getPosts()
+
+        postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
+        postsRecyclerView?.setHasFixedSize(true)
+        postsRecyclerView?.layoutManager = LinearLayoutManager(context)
+
+        adapter.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.i("Tag", "row $position")
+                val post = posts?.get(position)
+                post?.let {
+                    val action = UserPostsFragmentDirections.actionUserPostsFragmentToPostEditFragment(postId = post.id)
+                    Navigation.findNavController(view).navigate(action)
+                }
+
+            }
+        }
+        postsRecyclerView?.adapter = adapter
+
+        btnSearch.setOnClickListener {
+            getPosts()
+        }
+
+        return view
+    }
+    private fun setupCityDropdown() {
+        val blankOption = getString(R.string.blank_option)
+        val mutableCityNames = cities.map { it.שם_ישוב_לועזי }.toMutableList()
+        mutableCityNames.add(0, blankOption)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mutableCityNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCity.adapter = adapter
+        spinnerCity.setTitle(getString(R.string.select_city))
+        spinnerCity.setPositiveButton(getString(R.string.close))
+        spinnerCity.setSelection(0)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserPostsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserPostsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun setupCitySelectionListener() {
+        spinnerCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedCity = parent?.getItemAtPosition(position) as String
+                if (selectedCity != getString(R.string.blank_option)) {
+                    // Handle selected city=
+                    Log.d("PostsFragment", "Selected city: $selectedCity")
+                } else {
+                    Log.d("PostsFragment", "No city selected")
                 }
             }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.d("PostsFragment", "No city selected")
+            }
+        }
+    }
+
+    private fun getPosts() {
+        val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
+            null
+        } else {
+            spinnerCity.selectedItem as String
+        }
+        val minPrice = etMinPriceSearch.text.toString().toIntOrNull()
+        val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
+        val minBeds = etBedsSearch.text.toString().toIntOrNull()
+        val minBaths = etBathsSearch.text.toString().toIntOrNull()
+
+        Model.instance.getFilteredPosts(firebaseUser?.uid,city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
+            this.posts = filteredPosts
+            adapter.posts = filteredPosts
+            adapter.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        progressBar?.visibility = View.VISIBLE
+
+        getPosts()
     }
 }
