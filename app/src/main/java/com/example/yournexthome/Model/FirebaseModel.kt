@@ -6,11 +6,13 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
+import com.google.firebase.storage.FirebaseStorage
 
 class FirebaseModel {
     var POSTS_COLLECTION_NAME = "posts"
     var USERS_COLLECTION_NAME = "users"
     val db = Firebase.firestore
+    val firebaseStoreReference = FirebaseStorage.getInstance().reference
 
     init {
         val settings = firestoreSettings {
@@ -128,46 +130,58 @@ class FirebaseModel {
             }
     }
 
-        fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
-            try {
-                var query: Query = db.collection(POSTS_COLLECTION_NAME)
-                if (city != null) {
-                    query = query.whereEqualTo("city", city)
-                }
-                if (minPrice != null) {
-                    query = query.whereGreaterThanOrEqualTo("price", minPrice)
-                }
-                if (maxPrice != null) {
-                    query = query.whereLessThanOrEqualTo("price", maxPrice)
-                }
-
-                if (creatorId != "") {
-                    query = query.whereEqualTo("creatorId", creatorId)
-                }
-
-                query.get()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val posts: MutableList<Post> = mutableListOf()
-                            for (document in task.result!!) {
-                                val bedrooms = document.data["bedrooms"] as? Long
-                                val bathrooms = document.data["bathrooms"] as? Long
-
-                                if (bedrooms != null && bathrooms != null &&
-                                    (minBeds == null || bedrooms >= minBeds) &&
-                                    (minBaths == null || bathrooms >= minBaths)
-                                ) {
-                                    posts.add(Post.fromJSON(document.data, document.id))
-                                }
-                            }
-                            callback(posts)
-                        } else {
-                            callback(emptyList())
-                        }
-                    }
-            } catch (e: Exception) {
-                e.printStackTrace()
+    fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
+        try {
+            var query: Query = db.collection(POSTS_COLLECTION_NAME)
+            if (city != null) {
+                query = query.whereEqualTo("city", city)
             }
+            if (minPrice != null) {
+                query = query.whereGreaterThanOrEqualTo("price", minPrice)
+            }
+            if (maxPrice != null) {
+                query = query.whereLessThanOrEqualTo("price", maxPrice)
+            }
+
+            if (creatorId != "") {
+                query = query.whereEqualTo("creatorId", creatorId)
+            }
+
+            query.get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val posts: MutableList<Post> = mutableListOf()
+                        for (document in task.result!!) {
+                            val bedrooms = document.data["bedrooms"] as? Long
+                            val bathrooms = document.data["bathrooms"] as? Long
+
+                            if (bedrooms != null && bathrooms != null &&
+                                (minBeds == null || bedrooms >= minBeds) &&
+                                (minBaths == null || bathrooms >= minBaths)
+                            ) {
+                                posts.add(Post.fromJSON(document.data, document.id))
+                            }
+                        }
+                        callback(posts)
+                    } else {
+                        callback(emptyList())
+                    }
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+    }
+
+    fun uploadPicture(folderName: String) {
+        // Create a reference to "mountains.jpg"
+        val mountainsRef = firebaseStoreReference.child("mountains.jpg")
+
+// Create a reference to 'images/mountains.jpg'
+        val mountainImagesRef = firebaseStoreReference.child("$folderName/mountains.jpg")
+
+// While the file names are the same, the references point to different files
+        mountainsRef.name == mountainImagesRef.name // true
+        mountainsRef.path == mountainImagesRef.path // false
+    }
 
 }
