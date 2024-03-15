@@ -78,7 +78,7 @@ class NewPostFragment : Fragment() {
                 errorMessageTextView?.text = "Please fill all mandatory values"
             } else {
                 errorMessageTextView?.text = ""
-                val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, firebaseUser?.uid ?: "")
+                val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, firebaseUser?.uid ?: "", "")
                 Model.instance.addPost(post) {
                     Navigation.findNavController(view).navigate(R.id.action_global_postsFragment)
                 }

@@ -1,5 +1,6 @@
 package com.example.yournexthome.Model
 
+import android.net.Uri
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import com.example.yournexthome.dao.AppLocalDB
@@ -74,5 +75,9 @@ class Model private constructor(){
 
     fun updateUser(user: User, callback: ()-> Unit) {
         firebaseModel.updateUser(user, callback)
+    }
+
+    fun uploadImage(folderName: String, imageUri: Uri, randomImageKey: String, callback: () -> Unit) {
+        firebaseModel.uploadPicture(folderName, imageUri, randomImageKey, callback)
     }
 }

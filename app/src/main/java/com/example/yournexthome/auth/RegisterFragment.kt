@@ -21,6 +21,7 @@ import com.example.yournexthome.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import java.util.UUID
 
 class RegisterFragment : Fragment() {
     private var profileImage: ImageView? = null
@@ -76,9 +77,19 @@ class RegisterFragment : Fragment() {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("TAG", "createUserWithEmail:success")
-                    val user = User(auth.uid.toString(),email, username, "")
-                    Model.instance.addUser(user) {
-                        Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                    if (imageUri != null) {
+                        val randomImageKey = UUID.randomUUID().toString()
+                        Model.instance.uploadImage("users", imageUri!!, randomImageKey) {
+                            val user = User(auth.uid.toString(),email, username, randomImageKey)
+                            Model.instance.addUser(user) {
+                                Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                            }
+                        }
+                    } else {
+                        val user = User(auth.uid.toString(),email, username, "")
+                        Model.instance.addUser(user) {
+                            Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                        }
                     }
                 } else {
                     Log.w("TAG", "createUserWithEmail:failure", task.exception)

@@ -1,12 +1,16 @@
 package com.example.yournexthome.Model
 
+import android.net.Uri
 import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import java.util.UUID
 
 class FirebaseModel {
     var POSTS_COLLECTION_NAME = "posts"
@@ -172,16 +176,10 @@ class FirebaseModel {
         }
     }
 
-    fun uploadPicture(folderName: String) {
-        // Create a reference to "mountains.jpg"
-        val mountainsRef = firebaseStoreReference.child("mountains.jpg")
-
-// Create a reference to 'images/mountains.jpg'
-        val mountainImagesRef = firebaseStoreReference.child("$folderName/mountains.jpg")
-
-// While the file names are the same, the references point to different files
-        mountainsRef.name == mountainImagesRef.name // true
-        mountainsRef.path == mountainImagesRef.path // false
+    fun uploadPicture(folderName: String, imageUri: Uri, randomImageKey: String, callback: () -> Unit) {
+        val imagesRef = firebaseStoreReference.child("$folderName/$randomImageKey")
+        imagesRef.putFile(imageUri).addOnCompleteListener {
+            callback()
+        }
     }
-
 }

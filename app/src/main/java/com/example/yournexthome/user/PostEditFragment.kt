@@ -101,7 +101,8 @@ class PostEditFragment : Fragment() {
                 nameTextView?.text.toString(),
                 phoneTextView?.text.toString(),
                 freeTextTextView?.text.toString(),
-                creatorId!!
+                creatorId!!,
+                ""
             )
             Model.instance.updatePost(updatedPost) {
                 showSuccessMessage(view)
