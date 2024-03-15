@@ -1,6 +1,7 @@
 package com.example.yournexthome.Repository
 
 import CitiesResult
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.yournexthome.Model.City
@@ -16,6 +17,7 @@ class CityRepository {
         try {
             CityClient.cityApi.getCities(resourceId, limit).enqueue(object : Callback<CitiesResult> {
                 override fun onResponse(call: Call<CitiesResult>, response: Response<CitiesResult>) {
+                    Log.i("cities", response.body()?.result.toString())
                     if (response.isSuccessful) {
                         val citiesResult = response.body()
                         citiesResult?.let {

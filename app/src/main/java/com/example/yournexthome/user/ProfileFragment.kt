@@ -42,7 +42,6 @@ class ProfileFragment : Fragment() {
         profileImage!!.setOnClickListener(::setProfilePicture)
 
         progressBar = view.findViewById(R.id.progressBar)
-        progressBar?.visibility = View.VISIBLE
         initProfileValues(view)
         val registerBtn: Button = view.findViewById(R.id.update_btn)
         registerBtn.setOnClickListener(::onUpdateUserButtonClicked)
@@ -51,6 +50,7 @@ class ProfileFragment : Fragment() {
     }
 
     fun initProfileValues(view: View) {
+        progressBar?.visibility = View.VISIBLE
         usernameTextView = view.findViewById(R.id.newUsername)
         emailTextView = view.findViewById(R.id.newEmail)
         passwordTextView = view.findViewById(R.id.newPassword)
@@ -68,9 +68,9 @@ class ProfileFragment : Fragment() {
                 Model.instance.getImage("users", user!!.profilePicture) {uri ->
                     imageUri = uri
                     profileImage?.setImageURI(imageUri)
+                    progressBar?.visibility = View.GONE
                 }
             }
-            progressBar?.visibility = View.GONE
         } catch (e: Throwable) {
             errorMessageTextView?.text = "לא ניתן לשלוף פרטי משתמש"
         }

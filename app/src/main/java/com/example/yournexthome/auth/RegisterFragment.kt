@@ -89,12 +89,14 @@ class RegisterFragment : Fragment() {
                             val user = User(auth.uid.toString(),email, username, randomImageKey)
                             Model.instance.addUser(user) {
                                 Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                                progressBar?.visibility = View.GONE
                             }
                         }
                     } else {
                         val user = User(auth.uid.toString(),email, username, "")
                         Model.instance.addUser(user) {
                             Navigation.findNavController(view).navigate(R.id.action_global_loginFragment)
+                            progressBar?.visibility = View.GONE
                         }
                     }
                 } else {
@@ -104,9 +106,9 @@ class RegisterFragment : Fragment() {
                         "Authentication failed. ${task.exception?.message}",
                         Toast.LENGTH_SHORT,
                     ).show()
+                    progressBar?.visibility = View.GONE
                 }
             }
-            progressBar?.visibility = View.GONE
         }
     }
 
