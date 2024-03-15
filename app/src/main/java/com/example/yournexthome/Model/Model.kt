@@ -80,4 +80,8 @@ class Model private constructor(){
     fun uploadImage(folderName: String, imageUri: Uri, randomImageKey: String, callback: () -> Unit) {
         firebaseModel.uploadPicture(folderName, imageUri, randomImageKey, callback)
     }
+
+    fun getImage(folderName: String, randomImageKey: String, callback: (Uri?) -> Unit) {
+        firebaseModel.getPicture(folderName, randomImageKey, callback)
+    }
 }

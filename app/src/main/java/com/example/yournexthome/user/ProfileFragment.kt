@@ -1,5 +1,7 @@
 package com.example.yournexthome.user
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.example.yournexthome.Model.Model
@@ -17,12 +21,16 @@ import com.google.firebase.app
 import com.google.firebase.auth.auth
 
 class ProfileFragment : Fragment() {
+    private var profileImage: ImageView? = null
+    private var imageUri: Uri? = null
+
     private var userProfile: User? = null
     private var usernameTextView: TextView? = null
     private var emailTextView: TextView? = null
     private var passwordTextView: TextView? = null
     private var confirmPasswordTextView: TextView? = null
     private var errorMessageTextView: TextView? = null
+    private var progressBar: ProgressBar? = null
     val firebaseUser = Firebase.auth.currentUser
 
     override fun onCreateView(
@@ -30,9 +38,15 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+        profileImage = view.findViewById(R.id.userImage)
+        profileImage!!.setOnClickListener(::setProfilePicture)
+
+        progressBar = view.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.VISIBLE
         initProfileValues(view)
         val registerBtn: Button = view.findViewById(R.id.update_btn)
         registerBtn.setOnClickListener(::onUpdateUserButtonClicked)
+
         return view
     }
 
@@ -51,7 +65,12 @@ class ProfileFragment : Fragment() {
             Model.instance.getUserDetails(firebaseUser?.email ?: "") { user ->
                 userProfile = user
                 usernameTextView?.text = user?.username
+                Model.instance.getImage("users", user!!.profilePicture) {uri ->
+                    imageUri = uri
+                    profileImage?.setImageURI(imageUri)
+                }
             }
+            progressBar?.visibility = View.GONE
         } catch (e: Throwable) {
             errorMessageTextView?.text = "לא ניתן לשלוף פרטי משתמש"
         }
@@ -95,5 +114,24 @@ class ProfileFragment : Fragment() {
             "updated details successfully.",
             Toast.LENGTH_SHORT,
         ).show()
+    }
+
+    fun setProfilePicture(view: View) {
+        var intent = Intent()
+        intent.setType("image/*")
+        intent.setAction(Intent.ACTION_GET_CONTENT)
+        startActivityForResult(intent, 1)
+    }
+
+    @Override
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.i("res1", requestCode.toString())
+        Log.i("res2", resultCode.toString())
+        Log.i("res3", data.toString())
+        if (requestCode==1 && resultCode==-1 && data != null && data.data != null) {
+            imageUri = data.data
+            profileImage?.setImageURI(imageUri)
+        }
     }
 }

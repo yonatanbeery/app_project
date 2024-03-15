@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 
             cityRepository.getCities(resourceId, limit) { cities ->
                 this.cities = cities
-
                 navController?.navigate(R.id.action_global_postsFragment)
             }
         }

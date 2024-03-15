@@ -178,8 +178,23 @@ class FirebaseModel {
 
     fun uploadPicture(folderName: String, imageUri: Uri, randomImageKey: String, callback: () -> Unit) {
         val imagesRef = firebaseStoreReference.child("$folderName/$randomImageKey")
-        imagesRef.putFile(imageUri).addOnCompleteListener {
-            callback()
+        try {
+            imagesRef.putFile(imageUri).addOnCompleteListener {
+                callback()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun getPicture(folderName: String, randomImageKey: String, callback: (Uri?) -> Unit) {
+        val imagesRef = firebaseStoreReference.child("$folderName/$randomImageKey")
+        try {
+            imagesRef.downloadUrl.addOnCompleteListener {task ->
+                callback(task.result)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

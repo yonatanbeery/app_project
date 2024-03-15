@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
@@ -31,6 +32,7 @@ class RegisterFragment : Fragment() {
     private var passwordTextView: TextView? = null
     private var confirmPasswordTextView: TextView? = null
     private var errorMessageTextView: TextView? = null
+    private var progressBar: ProgressBar? = null
 
     private lateinit var auth: FirebaseAuth
 
@@ -51,6 +53,9 @@ class RegisterFragment : Fragment() {
         passwordTextView = view.findViewById(R.id.newPassword)
         confirmPasswordTextView = view.findViewById(R.id.confirmNewPassword)
         errorMessageTextView = view.findViewById(R.id.errorMessage)
+
+        progressBar = view.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.GONE
 
         val registerBtn: Button = view.findViewById(R.id.register_btn)
         registerBtn.setOnClickListener(::onRegisterButtonClicked)
@@ -73,6 +78,7 @@ class RegisterFragment : Fragment() {
         else if (password != confirmedPassword) {
             errorMessageTextView?.text = "Different passwords"
         } else {
+            progressBar?.visibility = View.VISIBLE
             errorMessageTextView?.text = ""
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -100,6 +106,7 @@ class RegisterFragment : Fragment() {
                     ).show()
                 }
             }
+            progressBar?.visibility = View.GONE
         }
     }
 
