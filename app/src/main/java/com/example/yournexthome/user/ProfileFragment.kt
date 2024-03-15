@@ -17,8 +17,9 @@ import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.User
 import com.example.yournexthome.R
 import com.google.firebase.Firebase
-import com.google.firebase.app
 import com.google.firebase.auth.auth
+import com.squareup.picasso.Picasso;
+
 
 class ProfileFragment : Fragment() {
     private var profileImage: ImageView? = null
@@ -65,9 +66,8 @@ class ProfileFragment : Fragment() {
             Model.instance.getUserDetails(firebaseUser?.email ?: "") { user ->
                 userProfile = user
                 usernameTextView?.text = user?.username
-                Model.instance.getImage("users", user!!.profilePicture) {uri ->
-                    imageUri = uri
-                    profileImage?.setImageURI(imageUri)
+                Model.instance.getImage("users", user!!.profilePicture) {imageUrl ->
+                    Picasso.get().load(imageUrl).into(profileImage)
                     progressBar?.visibility = View.GONE
                 }
             }
