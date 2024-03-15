@@ -11,11 +11,9 @@ class PostViewHolder(itemView: View, listener: PostsRecyclerViewActivity.OnItemC
 
     var postHeaderText: TextView? = null
     var postDescription: TextView?= null
-    var postCheckBox: CheckBox?= null
     init {
         postHeaderText = itemView.findViewById(R.id.postHeader)
         postDescription= itemView.findViewById(R.id.postDescription)
-        postCheckBox = itemView.findViewById(R.id.postRowCheckbox)
 
         itemView.setOnClickListener {
             listener?.onItemClick(adapterPosition)
