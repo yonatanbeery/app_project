@@ -15,7 +15,7 @@ data class Post(
     val phone: String,
     val freeText: String,
     val creatorId: String,
-    val postPicture: String) {
+    var postPicture: String) {
 
     companion object{
         fun fromJSON(json:Map<String, Any>, id: String):Post {

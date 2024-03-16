@@ -60,7 +60,9 @@ class FirebaseModel {
                 "bathrooms" to post.bathrooms,
                 "name" to post.name,
                 "phone" to post.phone,
-                "freeText" to post.freeText
+                "freeText" to post.freeText,
+                "postPicture" to post.postPicture
+
             ))
             .addOnSuccessListener { documentReference ->
                 callback()
