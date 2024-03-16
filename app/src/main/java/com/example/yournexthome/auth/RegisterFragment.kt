@@ -72,7 +72,7 @@ class RegisterFragment : Fragment() {
         val password = passwordTextView?.text.toString()
         val confirmedPassword = confirmPasswordTextView?.text.toString()
 
-        if (username.isNullOrBlank() || email.isNullOrBlank() || password.isNullOrBlank() || confirmedPassword.isNullOrBlank()) {
+        if (imageUri == null || username.isNullOrBlank() || email.isNullOrBlank() || password.isNullOrBlank() || confirmedPassword.isNullOrBlank()) {
             errorMessageTextView?.text = "Please fill all mandatory values"
         }
         else if (password != confirmedPassword) {
