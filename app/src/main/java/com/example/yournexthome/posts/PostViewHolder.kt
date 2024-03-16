@@ -2,20 +2,29 @@ package com.example.yournexthome.posts
 
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
+import com.squareup.picasso.Picasso
 
 class PostViewHolder(itemView: View, listener: PostsRecyclerViewActivity.OnItemClickListener?, posts: List<Post>?): RecyclerView.ViewHolder(itemView){
 
     var postHeaderText: TextView? = null
     var postDescription: TextView?= null
-    var postCheckBox: CheckBox?= null
+    var postPicture: ImageView? = null
+    var postPrice: TextView? = null
+    private var progressBar: ProgressBar? = null
     init {
         postHeaderText = itemView.findViewById(R.id.postHeader)
         postDescription= itemView.findViewById(R.id.postDescription)
-        postCheckBox = itemView.findViewById(R.id.postRowCheckbox)
+        postPicture = itemView.findViewById(R.id.postImage)
+        postPrice = itemView.findViewById(R.id.postPrice)
+        progressBar = itemView.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.GONE
 
         itemView.setOnClickListener {
             listener?.onItemClick(adapterPosition)
@@ -23,7 +32,13 @@ class PostViewHolder(itemView: View, listener: PostsRecyclerViewActivity.OnItemC
     }
 
     fun bind(post: Post?, position: Int) {
-        postHeaderText?.text = post?.name
+        progressBar?.visibility = View.VISIBLE
+        postHeaderText?.text = "${post?.bedrooms} beds | ${post?.bathrooms} baths | ${post?.areaSize} sqft"
         postDescription?.text = post?.city
+        postPrice?.text = "${post?.price.toString()} $"
+        Model.instance.getImage("posts", post!!.postPicture) { imageUrl ->
+            Picasso.get().load(imageUrl).into(postPicture)
+            progressBar?.visibility = View.GONE
+        }
     }
 }

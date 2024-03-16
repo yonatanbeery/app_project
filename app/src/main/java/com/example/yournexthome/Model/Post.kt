@@ -14,7 +14,8 @@ data class Post(
     val name: String,
     val phone: String,
     val freeText: String,
-    val creatorId: String) {
+    val creatorId: String,
+    var postPicture: String) {
 
     companion object{
         fun fromJSON(json:Map<String, Any>, id: String):Post {
@@ -27,7 +28,8 @@ data class Post(
             val phone = json["phone"].toString()
             val freeText = json["freeText"].toString()
             val creatorId = json["creatorId"].toString()
-            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId)
+            val postPicture = json["postPicture"].toString()
+            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture)
         }
     }
 
@@ -41,7 +43,8 @@ data class Post(
             "name" to name,
             "phone" to phone,
             "freeText" to freeText,
-            "creatorId" to creatorId
+            "creatorId" to creatorId,
+            "postPicture" to postPicture
         )
     }
 
