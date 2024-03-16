@@ -87,7 +87,7 @@ class NewPostFragment : Fragment() {
             val phone = phoneTextView?.text.toString()
             val freeText = freeTextTextView?.text.toString()
 
-            if(city.isNullOrBlank() || price.isNullOrBlank() || areaSize.isNullOrBlank() || bedrooms.isNullOrBlank() || bathrooms.isNullOrBlank() || name.isNullOrBlank() || phone.isNullOrBlank()) {
+            if(imageUri == null || city.isNullOrBlank() || price.isNullOrBlank() || areaSize.isNullOrBlank() || bedrooms.isNullOrBlank() || bathrooms.isNullOrBlank() || name.isNullOrBlank() || phone.isNullOrBlank()) {
                 errorMessageTextView?.text = "Please fill all mandatory values"
             } else {
                 progressBar?.visibility = View.VISIBLE
