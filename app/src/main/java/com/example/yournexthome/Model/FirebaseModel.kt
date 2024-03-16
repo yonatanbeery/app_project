@@ -128,6 +128,7 @@ class FirebaseModel {
             .document(user.id)
             .update(mapOf(
                 "username" to user.username,
+                "profilePicture" to user.profilePicture
             ))
             .addOnSuccessListener { documentReference ->
                 callback()

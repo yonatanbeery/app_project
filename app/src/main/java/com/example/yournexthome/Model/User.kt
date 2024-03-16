@@ -8,7 +8,7 @@ data class User(
     @PrimaryKey val id: String,
     val email: String,
     var username: String,
-    val profilePicture: String) {
+    var profilePicture: String) {
 
     companion object{
         fun fromJSON(json:Map<String, Any>, id: String):User {

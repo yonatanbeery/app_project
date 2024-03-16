@@ -13,12 +13,15 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.navigation.Navigation
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.User
 import com.example.yournexthome.R
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.squareup.picasso.Picasso;
+import java.util.UUID
 
 
 class ProfileFragment : Fragment() {
@@ -82,17 +85,32 @@ class ProfileFragment : Fragment() {
             errorMessageTextView?.text = "passwords mismatched"
         }
         else if (user != null) {
-            if (usernameTextView?.text?.toString() != user.username) {
+            if (imageUri != null) {
+                progressBar?.visibility = View.VISIBLE
+                val randomImageKey = UUID.randomUUID().toString()
+                Model.instance.uploadImage("users", imageUri!!, randomImageKey) {
+                    user.username = usernameTextView?.text.toString()
+                    user.profilePicture = randomImageKey
+                    Model.instance.updateUser(user) {
+                        progressBar?.visibility = View.GONE
+                        showSuccessMessage(view)
+                    }
+                }
+            }
+            else if (usernameTextView?.text?.toString() != user.username) {
+                progressBar?.visibility = View.VISIBLE
                 user.username = usernameTextView?.text.toString()
                 Model.instance.updateUser(user) {
+                    progressBar?.visibility = View.GONE
                     showSuccessMessage(view)
                 }
-                Log.i("TAG", "updated user username / picture")
             }
             if (passwordTextView?.text.toString() != "####") {
+                progressBar?.visibility = View.VISIBLE
                 firebaseUser!!.updatePassword(passwordTextView?.text.toString())
                     .addOnCompleteListener{
                         task ->
+                        progressBar?.visibility = View.GONE
                     if (task.isSuccessful) {
                         showSuccessMessage(view)
                     } else {
