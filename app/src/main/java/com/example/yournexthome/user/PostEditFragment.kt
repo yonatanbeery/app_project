@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.example.yournexthome.MainActivity
@@ -17,6 +19,7 @@ import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
 import com.example.yournexthome.posts.PostDetailsFragmentArgs
+import com.squareup.picasso.Picasso
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 
 class PostEditFragment : Fragment() {
@@ -32,6 +35,8 @@ class PostEditFragment : Fragment() {
     private var postId: String? = null
     private var errorMessageTextView: TextView? = null
     private lateinit var cities: List<City>
+    private var postPicture: ImageView? = null
+    private var progressBar: ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,24 +59,17 @@ class PostEditFragment : Fragment() {
         phoneTextView = view.findViewById(R.id.phone)
         freeTextTextView = view.findViewById(R.id.freeText)
         errorMessageTextView = view.findViewById(R.id.errorMessage)
+        postPicture = view.findViewById(R.id.ivPostDetailsImage)
         postId = arguments?.let { PostDetailsFragmentArgs.fromBundle(it).postId }
         val updateBtn: Button = view.findViewById(R.id.post_btn)
+        progressBar = view.findViewById(R.id.progressBar)
+        progressBar?.visibility = View.GONE
 
         setupCityDropdown()
         setupCitySelectionListener()
 
         if (postId != null) {
-            Model.instance.getPost(postId!!) { post ->
-                setCitySpinnerValue(post?.city.toString())
-                priceTextView?.text = post?.price.toString()
-                areaSizeTextView?.text = post?.areaSize.toString()
-                bedroomsTextView?.text = post?.bedrooms.toString()
-                bathroomsTextView?.text = post?.bathrooms.toString()
-                nameTextView?.text = post?.name.toString()
-                phoneTextView?.text = post?.phone.toString()
-                freeTextTextView?.text = post?.freeText.toString()
-                creatorId = post?.creatorId.toString()
-            }
+            setUpPostDetails()
         }
 
         updateBtn.setOnClickListener(::updatePost)
@@ -136,6 +134,27 @@ class PostEditFragment : Fragment() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Log.d("NewPostFragment", "No city selected")
+            }
+        }
+    }
+
+    fun setUpPostDetails() {
+        progressBar?.visibility = View.VISIBLE
+        Model.instance.getPost(postId!!) { post ->
+            setCitySpinnerValue(post?.city.toString())
+            priceTextView?.text = post?.price.toString()
+            areaSizeTextView?.text = post?.areaSize.toString()
+            bedroomsTextView?.text = post?.bedrooms.toString()
+            bathroomsTextView?.text = post?.bathrooms.toString()
+            nameTextView?.text = post?.name.toString()
+            phoneTextView?.text = post?.phone.toString()
+            freeTextTextView?.text = post?.freeText.toString()
+            creatorId = post?.creatorId.toString()
+            Log.i("post", post?.freeText.toString())
+            Log.i("post", post?.postPicture.toString())
+            Model.instance.getImage("posts", post!!.postPicture) { imageUrl ->
+                Picasso.get().load(imageUrl).into(postPicture)
+                progressBar?.visibility = View.GONE
             }
         }
     }
