@@ -2,9 +2,11 @@ package com.example.yournexthome.Model
 
 import android.net.Uri
 import android.os.Looper
+import android.util.Log
 import androidx.core.os.HandlerCompat
 import com.example.yournexthome.dao.AppLocalDB
 import java.util.concurrent.Executors
+import kotlin.time.Duration.Companion.seconds
 
 class Model private constructor(){
     private var database = AppLocalDB.db
@@ -16,29 +18,8 @@ class Model private constructor(){
         val instance: Model = Model()
     }
 
-    interface getAllPostsListener {
-        fun onComplete(posts:List<Post>)
-    }
-
-    fun getAllPosts(callback: (List<Post>)-> Unit) {
-        firebaseModel.getAllPosts(callback)
-//        executor.execute{
-//            Thread.sleep(2000)
-//            val posts = database.PostDao().gatAll()
-//            mainHandler.post {
-//                callback(posts)
-//            }
-//        }
-    }
-
     fun addPost(post: Post, callback: ()-> Unit) {
         firebaseModel.addPost(post, callback)
-//        executor.execute{
-//            database.PostDao().insert(post)
-//            mainHandler.post {
-//                callback()
-//            }
-//        }
     }
 
     fun updatePost(post: Post, callback: ()-> Unit) {
@@ -47,22 +28,27 @@ class Model private constructor(){
 
     fun getPost(postId: String, callback: (Post?)-> Unit) {
         firebaseModel.getPost(postId, callback)
-//        executor.execute{
-//            database.PostDao().insert(post)
-//            mainHandler.post {
-//                callback()
-//            }
-//        }
     }
 
     fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>)-> Unit) {
-            firebaseModel.getFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths, callback)
-//        executor.execute{
-//            database.PostDao().insert(post)
-//            mainHandler.post {
-//                callback()
-//            }
-//        }
+        var lastUpdated: Long = Post.lastUpdated
+
+        firebaseModel.getFilteredPosts(lastUpdated, city, minPrice, maxPrice, minBeds, minBaths) {list ->
+            executor.execute {
+                var time = lastUpdated
+                for(post in list) {
+                    database.PostDao().insert(post)
+                    post.lastUpdated?.let {
+                        if(time < it) time = post.lastUpdated ?: (System.currentTimeMillis() / 1000)
+                    }
+                }
+                Post.lastUpdated = time
+                val posts = database.PostDao().gatFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths)
+                mainHandler.post{
+                    callback(posts)
+                }
+            }
+        }
     }
 
     fun addUser(user: User, callback: ()-> Unit) {

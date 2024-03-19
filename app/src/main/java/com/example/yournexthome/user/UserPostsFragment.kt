@@ -130,7 +130,7 @@ class UserPostsFragment : Fragment() {
         val minBeds = etBedsSearch.text.toString().toIntOrNull()
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
-        Model.instance.getFilteredPosts(firebaseUser?.uid,city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
+        Model.instance.getFilteredPosts(firebaseUser?.uid, city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
             this.posts = filteredPosts
             adapter.posts = filteredPosts
             adapter.notifyDataSetChanged()
