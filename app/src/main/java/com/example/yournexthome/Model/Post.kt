@@ -2,6 +2,9 @@ package com.example.yournexthome.Model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.firestore.FieldValue
+import java.lang.reflect.Field
+import java.sql.Timestamp
 
 @Entity
 data class Post(
@@ -15,9 +18,11 @@ data class Post(
     val phone: String,
     val freeText: String,
     val creatorId: String,
-    var postPicture: String) {
+    var postPicture: String,
+    var lastUpdated: Long? = null) {
 
     companion object{
+        var lastUpdated:Long = 0
         fun fromJSON(json:Map<String, Any>, id: String):Post {
             val city = json["city"].toString()
             val price = json["price"].toString()
@@ -29,7 +34,8 @@ data class Post(
             val freeText = json["freeText"].toString()
             val creatorId = json["creatorId"].toString()
             val postPicture = json["postPicture"].toString()
-            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture)
+            val lastUpdated = json["lastUpdated"] as? Timestamp
+            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture, lastUpdated?.time)
         }
     }
 
@@ -44,7 +50,8 @@ data class Post(
             "phone" to phone,
             "freeText" to freeText,
             "creatorId" to creatorId,
-            "postPicture" to postPicture
+            "postPicture" to postPicture,
+            "lastUpdated" to FieldValue.serverTimestamp()
         )
     }
 
