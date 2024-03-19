@@ -2,6 +2,7 @@ package com.example.yournexthome.Model
 
 import android.net.Uri
 import android.os.Looper
+import android.util.Log
 import androidx.core.os.HandlerCompat
 import com.example.yournexthome.dao.AppLocalDB
 import java.util.concurrent.Executors
@@ -41,6 +42,12 @@ class Model private constructor(){
                     }
                 }
                 Post.lastUpdated = time
+                Log.i("creatorId", creatorId.toString())
+                Log.i("city", city.toString())
+                Log.i("minPrice", minPrice.toString())
+                Log.i("maxPrice", maxPrice.toString())
+                Log.i("minBeds", minBeds.toString())
+                Log.i("minBaths", minBaths.toString())
                 val posts = database.PostDao().gatFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths)
                 mainHandler.post{
                     callback(posts)
