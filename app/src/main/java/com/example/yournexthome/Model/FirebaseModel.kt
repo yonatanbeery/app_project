@@ -2,7 +2,6 @@ package com.example.yournexthome.Model
 
 import android.net.Uri
 import android.util.Log
-import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
@@ -10,8 +9,6 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.memoryCacheSettings
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import java.util.UUID
 
 class FirebaseModel {
     var POSTS_COLLECTION_NAME = "posts"
@@ -61,7 +58,8 @@ class FirebaseModel {
                 "name" to post.name,
                 "phone" to post.phone,
                 "freeText" to post.freeText,
-                "postPicture" to post.postPicture
+                "postPicture" to post.postPicture,
+                "lastUpdated" to Timestamp(System.currentTimeMillis() / 1000, 0)
 
             ))
             .addOnSuccessListener { documentReference ->
@@ -137,7 +135,7 @@ class FirebaseModel {
             }
     }
 
-    fun getFilteredPosts(since: Long, creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
+    fun getFilteredPosts(since: Long, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
         try {
             var query: Query = db.collection(POSTS_COLLECTION_NAME)
             if (city != null) {
@@ -150,17 +148,15 @@ class FirebaseModel {
                 query = query.whereLessThanOrEqualTo("price", maxPrice)
             }
 
-            if (creatorId != "") {
-                query = query.whereEqualTo("creatorId", creatorId)
-            }
-
+            Log.i("filtering since", Timestamp(since, 0).toDate().toString())
             query
-                .whereGreaterThanOrEqualTo("lastUpdated", Timestamp(since, 0))
+                .whereGreaterThan("lastUpdated", Timestamp(since, 0))
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val posts: MutableList<Post> = mutableListOf()
                         for (document in task.result!!) {
+                            Log.i("document", document.data.toString())
                             val bedrooms = document.data["bedrooms"] as? Long
                             val bathrooms = document.data["bathrooms"] as? Long
 

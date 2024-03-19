@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.core.os.HandlerCompat
 import com.example.yournexthome.dao.AppLocalDB
 import java.util.concurrent.Executors
+import kotlin.time.Duration.Companion.seconds
 
 class Model private constructor(){
     private var database = AppLocalDB.db
@@ -32,13 +33,13 @@ class Model private constructor(){
     fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>)-> Unit) {
         var lastUpdated: Long = Post.lastUpdated
 
-        firebaseModel.getFilteredPosts(lastUpdated, creatorId, city, minPrice, maxPrice, minBeds, minBaths) {list ->
+        firebaseModel.getFilteredPosts(lastUpdated, city, minPrice, maxPrice, minBeds, minBaths) {list ->
             executor.execute {
                 var time = lastUpdated
                 for(post in list) {
                     database.PostDao().insert(post)
                     post.lastUpdated?.let {
-                        if(time < it) time = post.lastUpdated ?: System.currentTimeMillis()
+                        if(time < it) time = post.lastUpdated ?: (System.currentTimeMillis() / 1000)
                     }
                 }
                 Post.lastUpdated = time

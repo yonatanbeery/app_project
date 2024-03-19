@@ -3,8 +3,7 @@ package com.example.yournexthome.Model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.firestore.FieldValue
-import java.lang.reflect.Field
-import java.sql.Timestamp
+import com.google.firebase.Timestamp
 
 @Entity
 data class Post(
@@ -35,7 +34,7 @@ data class Post(
             val creatorId = json["creatorId"].toString()
             val postPicture = json["postPicture"].toString()
             val lastUpdated = json["lastUpdated"] as? Timestamp
-            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture, lastUpdated?.time)
+            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture, lastUpdated?.seconds?.toLong())
         }
     }
 
