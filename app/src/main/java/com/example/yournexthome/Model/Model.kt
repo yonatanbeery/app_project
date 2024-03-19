@@ -42,12 +42,6 @@ class Model private constructor(){
                     }
                 }
                 Post.lastUpdated = time
-                Log.i("creatorId", creatorId.toString())
-                Log.i("city", city.toString())
-                Log.i("minPrice", minPrice.toString())
-                Log.i("maxPrice", maxPrice.toString())
-                Log.i("minBeds", minBeds.toString())
-                Log.i("minBaths", minBaths.toString())
                 val posts = database.PostDao().gatFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths)
                 mainHandler.post{
                     callback(posts)
