@@ -1,6 +1,5 @@
 package com.example.yournexthome.posts
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yournexthome.MainActivity
@@ -20,6 +18,7 @@ import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 
 class PostsFragment : Fragment() {
@@ -70,8 +69,10 @@ class PostsFragment : Fragment() {
                 Log.i("Tag", "row $position")
                 val post = posts?.get(position)
                 post?.let {
-                    val action = PostsFragmentDirections.actionPostsFragmentToPostDetailsFragment(postId = post.id)
-                    Navigation.findNavController(view).navigate(action)
+                    val detailsFragment = PostDetailsFragment.newInstance(post.id)
+                    val fragmentManager = activity?.supportFragmentManager ?: return
+                    detailsFragment.show(fragmentManager, "postDetails")
+
                 }
 
             }
@@ -84,6 +85,7 @@ class PostsFragment : Fragment() {
 
         return view
     }
+
     private fun setupCityDropdown() {
         val blankOption = getString(R.string.blank_option)
         val mutableCityNames = cities.map { it.שם_ישוב_לועזי }.toMutableList()
@@ -101,7 +103,6 @@ class PostsFragment : Fragment() {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             val selectedCity = parent?.getItemAtPosition(position) as String
                     if (selectedCity != getString(R.string.blank_option)) {
-                        // Handle selected city=
                         Log.d("PostsFragment", "Selected city: $selectedCity")
                     } else {
                 Log.d("PostsFragment", "No city selected")
