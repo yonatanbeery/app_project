@@ -9,12 +9,16 @@
 
     <ImageView
         android:id="@+id/ivPostDetailsImage"
-        android:layout_width="273dp"
+        android:layout_width="match_parent"
         android:layout_height="245dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:src="@android:drawable/ic_menu_gallery"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:text="TextView"
         android:textSize="26sp"
@@ -45,25 +49,38 @@
         app:layout_constraintTop_toBottomOf="@+id/ivPostDetailsImage" />
 
     <TextView
-        android:id="@+id/tvPostDetailsDescription"
+        android:id="@+id/tvPostDetailsCity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="15dp"
+        android:text="TextView"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPostDetailsPrice" />
+
+
+    <TextView
+        android:id="@+id/tvPostDetailsDescription"
+        android:layout_width="0dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="15dp"
         android:text="TextView"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPostDetailsPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPostDetailsCity" />
 
     <TextView
         android:id="@+id/tvPostDetailsFreeText"
-        android:layout_width="385dp"
-        android:layout_height="56dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="15dp"
         android:text="TextView"
         android:textSize="20sp"
@@ -76,7 +93,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="200dp"
         android:text="Contact Details:"
         android:textSize="20sp"
@@ -88,7 +105,7 @@
         android:id="@+id/tvPostDetailsName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
+        android:layout_marginStart="145dp"
         android:text="TextView"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvPostDetailsNameTitle"
@@ -99,7 +116,7 @@
         android:id="@+id/tvPostDetailsPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
+        android:layout_marginStart="145dp"
         android:text="TextView"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tvPostDetailsPhoneNumberTitle"
@@ -110,7 +127,7 @@
         android:id="@+id/tvPostDetailsNameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="25dp"
         android:text="Name:"
         android:textSize="20sp"
@@ -123,12 +140,30 @@
         android:id="@+id/tvPostDetailsPhoneNumberTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="120dp"
         android:text="Phone number:"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.235"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPostDetailsNameTitle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnExitDetailsDialog"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="290dp"
+        android:backgroundTint="@color/grey"
+        android:text="X"
+        android:textColor="@color/black"
+        app:cornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivPostDetailsImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

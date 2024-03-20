@@ -5,6 +5,7 @@
     android:id="@+id/FragmentPosts"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="100dp"
     tools:context=".posts.PostsFragment">
 
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
