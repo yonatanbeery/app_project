@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/FragmentPosts"
@@ -11,105 +10,127 @@
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/spinnerCityPosts"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
+        android:ems="10"
         android:hint="City"
-        android:ems="10"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etMaxPriceSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:hint="max price"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
-        app:layout_constraintEnd_toStartOf="@+id/etBedsSearch"
-        app:layout_constraintStart_toEndOf="@+id/etMinPriceSearch"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
-
-    <EditText
-        android:id="@+id/etBathsSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="baths"
-        app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
-        app:layout_constraintEnd_toStartOf="@+id/btnSearch"
-        app:layout_constraintStart_toEndOf="@+id/etBedsSearch"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
-
-    <EditText
-        android:id="@+id/etBedsSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="beds"
-        app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
-        app:layout_constraintEnd_toStartOf="@+id/etBathsSearch"
-        app:layout_constraintStart_toEndOf="@+id/etMaxPriceSearch"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
-
-    <EditText
-        android:id="@+id/etMinPriceSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="min price"
-        app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
-        app:layout_constraintEnd_toStartOf="@+id/etMaxPriceSearch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
-
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Search"
-        app:layout_constraintBottom_toTopOf="@+id/PostsFragmentList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
-
-    <!-- RecyclerView Section -->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/PostsFragmentList"
-        android:layout_width="413dp"
-        android:layout_height="604dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etMinPriceSearchLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="186dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        app:hintEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+
+        <EditText
+            android:id="@+id/etMinPriceSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="min price"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etMaxPriceSearchLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="189dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etMinPriceSearchLayout"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+
+        <EditText
+            android:id="@+id/etMaxPriceSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="max price"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etBedsSearchLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="63dp"
+        app:hintEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+
+        <EditText
+            android:id="@+id/etBedsSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="beds"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etBathsSearchLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="131dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="63dp"
+        app:hintEnabled="true"
+        app:layout_constraintStart_toEndOf="@+id/etBedsSearchLayout"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+
+        <EditText
+            android:id="@+id/etBathsSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="baths"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSearch"
+        android:layout_width="104dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="63dp"
+        android:layout_marginEnd="14dp"
+        android:text="Search"
+        android:backgroundTint="@color/primary"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etBathsSearchLayout"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/PostsFragmentList"
+        android:layout_width="426dp"
+        android:layout_height="518dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSearch"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.423" />
 
     <ProgressBar
         android:id="@+id/progressBar"
