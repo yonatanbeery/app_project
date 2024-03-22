@@ -8,20 +8,35 @@
     android:elevation="100dp"
     tools:context=".posts.PostsFragment">
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/spinnerCityPosts"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/spinnerSearchCityPostBorder"
         android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="City"
-        android:inputType="text"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spinnerCityPosts"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.google.android.material.card.MaterialCardView>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etMinPriceSearchLayout"
@@ -31,7 +46,7 @@
         android:layout_marginStart="6dp"
         app:hintEnabled="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchCityPostBorder">
 
         <EditText
             android:id="@+id/etMinPriceSearch"
@@ -53,7 +68,7 @@
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etMinPriceSearchLayout"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchCityPostBorder">
 
         <EditText
             android:id="@+id/etMaxPriceSearch"
@@ -74,7 +89,7 @@
         android:layout_marginTop="63dp"
         app:hintEnabled="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchCityPostBorder">
 
         <EditText
             android:id="@+id/etBedsSearch"
@@ -95,7 +110,7 @@
         android:layout_marginTop="63dp"
         app:hintEnabled="true"
         app:layout_constraintStart_toEndOf="@+id/etBedsSearchLayout"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchCityPostBorder">
 
         <EditText
             android:id="@+id/etBathsSearch"
@@ -119,7 +134,7 @@
         app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etBathsSearchLayout"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityPosts" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchCityPostBorder" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/PostsFragmentList"
