@@ -6,143 +6,368 @@
     android:layout_height="match_parent"
     tools:context=".posts.NewPostFragment">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ownerNameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="190dp"
+        android:layout_height="42dp"
+        android:padding="0dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextText8"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText7">
+
+        <EditText
+            android:id="@+id/ownerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="textShortMessage"
+            android:textColor="@android:color/black"  />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/areaSizeLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="100dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="40dp"
+        android:padding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextText6"
+        app:layout_constraintTop_toBottomOf="@+id/bathroomsLayout">
+
+        <EditText
+            android:id="@+id/areaSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/priceLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="100dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:padding="0dp"
+        app:layout_constraintStart_toEndOf="@+id/editTextText3"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityNewPost">
+
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <ImageView
         android:id="@+id/ivPostDetailsImage"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="12dp"
+        android:inputType="textMultiLine"
         android:src="@android:drawable/ic_menu_gallery"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText10" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/post_btn"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/primary"
+        android:text="Update !"
+        android:textSize="18dp"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/ivPostDetailsImage"
+        app:layout_constraintTop_toBottomOf="@+id/freeTextLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/bathroomsLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="100dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="40dp"
+        android:padding="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextText5"
+        app:layout_constraintTop_toBottomOf="@+id/bedroomsLayout">
+
+        <EditText
+            android:id="@+id/bathrooms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="number" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="124dp"
-        android:layout_height="118dp"
-        android:layout_marginStart="140dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.414" />
+        app:layout_constraintVertical_bias="0.408" />
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/spinnerCityNewPost"
-        android:layout_width="208dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginTop="15dp"
-        android:hint="@string/city"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPostDetailsImage" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/price"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/bedroomsLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:hint="Price"
-        android:inputType="number"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="40dp"
+        android:padding="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityNewPost" />
+        app:layout_constraintStart_toEndOf="@+id/editTextText4"
+        app:layout_constraintTop_toBottomOf="@+id/priceLayout">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/areaSize"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:hint="AreaSize"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityNewPost" />
+        <EditText
+            android:id="@+id/bedrooms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="number" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/bedrooms"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintHorizontal_bias="0.7"
-        android:hint="Bedrooms"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/areaSize" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/bathrooms"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintHorizontal_bias="0.3"
-        android:hint="Bathrooms"
-        android:inputType="number"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/freeTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="265dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:padding="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/areaSize" />
+        app:layout_constraintStart_toEndOf="@+id/editTextText10"
+        app:layout_constraintTop_toBottomOf="@+id/phoneLayout">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/ownerName"
-        android:layout_width="208dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        android:hint="Owner name"
-        android:inputType="textShortMessage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bathrooms" />
+        <EditText
+            android:id="@+id/freeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="10dp"
+            android:inputType="textMultiLine" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/phone"
-        android:layout_width="208dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        android:hint="Phone number"
-        android:inputType="textShortMessage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ownerName" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/freeText"
-        android:layout_width="208dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        android:hint="FreeText"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone" />
-
-    <Button
-        android:id="@+id/post_btn"
-        android:layout_width="165dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="20dp"
-        android:text="Update !"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/freeText" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/errorMessage"
         android:layout_width="250dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="38dp"
         android:text=""
+        android:textAlignment="center"
         android:textColor="@color/design_default_color_error"
         android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_btn" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerCityNewPost"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:hint="@string/city"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toEndOf="@+id/editTextText2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="192dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextText9"
+        app:layout_constraintTop_toBottomOf="@+id/ownerNameLayout">
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textShortMessage" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Edit your property:"
+        android:textSize="24dp"
+        android:textColor="@color/darkGrey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText2"
+        android:layout_width="91dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="City:"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextText3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText3"
+        android:layout_width="91dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Price:"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText4"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Number of bedrooms:"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText5"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Number of bathrooms:"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText6"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Area size:"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText5" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Contact details: "
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText6" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText8"
+        android:layout_width="67dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name:"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText7" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText9"
+        android:layout_width="134dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Phone number: "
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText8" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/editTextText10"
+        android:layout_width="85dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Free text: "
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText9" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
