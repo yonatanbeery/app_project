@@ -58,7 +58,7 @@ class PostsFragment : Fragment() {
 
         setupCityDropdown()
         setupCitySelectionListener()
-        getFilteredPosts()
+        viewModel.posts = Model.instance.getAllPosts(null)
 
         postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
         postsRecyclerView?.setHasFixedSize(true)
@@ -68,7 +68,7 @@ class PostsFragment : Fragment() {
         adapter?.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
-                val post = viewModel.posts?.value?.get(position)
+                val post = adapter?.posts?.get(position)
                 post?.let {
                     val detailsFragment = PostDetailsFragment.newInstance(post.id)
                     val fragmentManager = activity?.supportFragmentManager ?: return
@@ -81,7 +81,7 @@ class PostsFragment : Fragment() {
         postsRecyclerView?.adapter = adapter
 
         btnSearch.setOnClickListener {
-            getFilteredPosts()
+            filterPosts()
         }
 
         viewModel.posts?.observe(viewLifecycleOwner) {
@@ -143,7 +143,7 @@ class PostsFragment : Fragment() {
         progressBar?.visibility = View.GONE
     }
 
-    fun getFilteredPosts() {
+    fun filterPosts() {
         val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
             null
         } else {
@@ -153,8 +153,18 @@ class PostsFragment : Fragment() {
         val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
         val minBeds = etBedsSearch.text.toString().toIntOrNull()
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
+        var filteredPosts: MutableList<Post> = ArrayList<Post>()
 
-        viewModel.posts = Model.instance.getFilteredPosts(null, city, minPrice, maxPrice, minBeds, minBaths)
-
+        for (post in viewModel.posts?.value!!) {
+            if((city == null || post.city == city) &&
+                (minPrice == null || post.price > minPrice.toInt()) &&
+                (maxPrice == null || post.price < maxPrice.toInt()) &&
+                (minBeds == null || post.bedrooms > minBeds.toInt()) &&
+                (minBaths == null || post.bathrooms > minBaths.toInt())) {
+                filteredPosts.add(post)
+            }
+        }
+        adapter?.posts = filteredPosts
+        adapter?.notifyDataSetChanged()
     }
 }

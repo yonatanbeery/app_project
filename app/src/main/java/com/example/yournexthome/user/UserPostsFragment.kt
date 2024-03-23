@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yournexthome.MainActivity
 import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
+import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
 import com.example.yournexthome.posts.PostsRecyclerAdapter
 import com.example.yournexthome.posts.PostsRecyclerViewActivity
@@ -65,7 +66,7 @@ class UserPostsFragment : Fragment() {
 
         setupCityDropdown()
         setupCitySelectionListener()
-        getFilteredPosts()
+        viewModel.posts = Model.instance.getAllPosts(firebaseUser?.uid)
 
         postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
         postsRecyclerView?.setHasFixedSize(true)
@@ -74,7 +75,7 @@ class UserPostsFragment : Fragment() {
         adapter?.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
-                val post = viewModel.posts?.value?.get(position)
+                val post = adapter?.posts?.get(position)
                 post?.let {
                     val action = UserPostsFragmentDirections.actionUserPostsFragmentToPostEditFragment(postId = post.id)
                     Navigation.findNavController(view).navigate(action)
@@ -85,7 +86,7 @@ class UserPostsFragment : Fragment() {
         postsRecyclerView?.adapter = adapter
 
         btnSearch.setOnClickListener {
-            refreshPosts()
+            filterPosts()
         }
 
         viewModel.posts?.observe(viewLifecycleOwner) {
@@ -145,7 +146,7 @@ class UserPostsFragment : Fragment() {
         progressBar?.visibility = View.GONE
     }
 
-    fun getFilteredPosts() {
+    fun filterPosts() {
         val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
             null
         } else {
@@ -155,7 +156,18 @@ class UserPostsFragment : Fragment() {
         val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
         val minBeds = etBedsSearch.text.toString().toIntOrNull()
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
+        var filteredPosts: MutableList<Post> = ArrayList<Post>()
 
-        viewModel.posts = Model.instance.getFilteredPosts(firebaseUser?.uid, city, minPrice, maxPrice, minBeds, minBaths)
+        for (post in viewModel.posts?.value!!) {
+            if((city == null || post.city == city) &&
+                (minPrice == null || post.price > minPrice.toInt()) &&
+                (maxPrice == null || post.price < maxPrice.toInt()) &&
+                (minBeds == null || post.bedrooms > minBeds.toInt()) &&
+                (minBaths == null || post.bathrooms > minBaths.toInt())) {
+                filteredPosts.add(post)
+            }
+        }
+        adapter?.posts = filteredPosts
+        adapter?.notifyDataSetChanged()
     }
 }
