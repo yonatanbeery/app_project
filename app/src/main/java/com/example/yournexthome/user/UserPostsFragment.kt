@@ -11,17 +11,19 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.yournexthome.MainActivity
 import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
 import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
-import com.example.yournexthome.posts.PostsFragmentDirections
 import com.example.yournexthome.posts.PostsRecyclerAdapter
 import com.example.yournexthome.posts.PostsRecyclerViewActivity
+import com.example.yournexthome.posts.PostsViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
@@ -30,16 +32,16 @@ class UserPostsFragment : Fragment() {
     val firebaseUser = Firebase.auth.currentUser
 
     private var postsRecyclerView: RecyclerView? = null
-    private var posts: List<Post>? = null
-    private var adapter = PostsRecyclerAdapter(posts)
+    private var adapter:PostsRecyclerAdapter? = null
     private var progressBar: ProgressBar? = null
-
+    private lateinit var viewModel: PostsViewModel
     private lateinit var spinnerCity: SearchableSpinner
     private lateinit var etMinPriceSearch: EditText
     private lateinit var etMaxPriceSearch: EditText
     private lateinit var etBedsSearch: EditText
     private lateinit var etBathsSearch: EditText
     private lateinit var btnSearch: Button
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var cities: List<City>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,9 +52,12 @@ class UserPostsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this)[PostsViewModel::class.java]
+        adapter = PostsRecyclerAdapter(viewModel.posts?.value)
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
         progressBar = view.findViewById(R.id.progressBar)
-        progressBar?.visibility = View.VISIBLE
+        swipeRefresh = view.findViewById(R.id.swipeRefresher)
+        progressBar?.visibility = View.GONE
         super.onCreate(savedInstanceState)
 
         spinnerCity = view.findViewById(R.id.spinnerCityPosts)
@@ -64,17 +69,16 @@ class UserPostsFragment : Fragment() {
 
         setupCityDropdown()
         setupCitySelectionListener()
-
-        getPosts()
+        viewModel.posts = Model.instance.getAllPosts(firebaseUser?.uid)
 
         postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
         postsRecyclerView?.setHasFixedSize(true)
         postsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
+        adapter?.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
-                val post = posts?.get(position)
+                val post = adapter?.posts?.get(position)
                 post?.let {
                     val action = UserPostsFragmentDirections.actionUserPostsFragmentToPostEditFragment(postId = post.id)
                     Navigation.findNavController(view).navigate(action)
@@ -85,7 +89,21 @@ class UserPostsFragment : Fragment() {
         postsRecyclerView?.adapter = adapter
 
         btnSearch.setOnClickListener {
-            getPosts()
+            filterPosts()
+        }
+
+        viewModel.posts?.observe(viewLifecycleOwner) {
+            adapter?.posts = it
+            adapter?.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
+        }
+
+        Model.instance.postsLoadingState.observe(viewLifecycleOwner) { state ->
+            swipeRefresh.isRefreshing = state == Model.LoadingState.LOADING
+        }
+
+        swipeRefresh.setOnRefreshListener {
+            refreshPosts()
         }
 
         return view
@@ -107,7 +125,6 @@ class UserPostsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCity = parent?.getItemAtPosition(position) as String
                 if (selectedCity != getString(R.string.blank_option)) {
-                    // Handle selected city=
                     Log.d("PostsFragment", "Selected city: $selectedCity")
                 } else {
                     Log.d("PostsFragment", "No city selected")
@@ -119,7 +136,18 @@ class UserPostsFragment : Fragment() {
         }
     }
 
-    private fun getPosts() {
+    override fun onResume() {
+        super.onResume()
+        progressBar?.visibility = View.VISIBLE
+        refreshPosts()
+    }
+
+    private fun refreshPosts() {
+        Model.instance.refreshPosts()
+        progressBar?.visibility = View.GONE
+    }
+
+    fun filterPosts() {
         val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
             null
         } else {
@@ -129,19 +157,18 @@ class UserPostsFragment : Fragment() {
         val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
         val minBeds = etBedsSearch.text.toString().toIntOrNull()
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
+        var filteredPosts: MutableList<Post> = ArrayList<Post>()
 
-        Model.instance.getFilteredPosts(firebaseUser?.uid, city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
-            this.posts = filteredPosts
-            adapter.posts = filteredPosts
-            adapter.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
+        for (post in viewModel.posts?.value!!) {
+            if((city == null || post.city == city) &&
+                (minPrice == null || post.price > minPrice.toInt()) &&
+                (maxPrice == null || post.price < maxPrice.toInt()) &&
+                (minBeds == null || post.bedrooms > minBeds.toInt()) &&
+                (minBaths == null || post.bathrooms > minBaths.toInt())) {
+                filteredPosts.add(post)
+            }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        progressBar?.visibility = View.VISIBLE
-
-        getPosts()
+        adapter?.posts = filteredPosts
+        adapter?.notifyDataSetChanged()
     }
 }

@@ -135,18 +135,9 @@ class FirebaseModel {
             }
     }
 
-    fun getFilteredPosts(since: Long, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>) -> Unit) {
+    fun getAllPosts(since: Long, callback: (List<Post>) -> Unit) {
         try {
             var query: Query = db.collection(POSTS_COLLECTION_NAME)
-            if (city != null) {
-                query = query.whereEqualTo("city", city)
-            }
-            if (minPrice != null) {
-                query = query.whereGreaterThanOrEqualTo("price", minPrice)
-            }
-            if (maxPrice != null) {
-                query = query.whereLessThanOrEqualTo("price", maxPrice)
-            }
 
             Log.i("filtering since", Timestamp(since, 0).toDate().toString())
             query
@@ -157,15 +148,7 @@ class FirebaseModel {
                         val posts: MutableList<Post> = mutableListOf()
                         for (document in task.result!!) {
                             Log.i("document", document.data.toString())
-                            val bedrooms = document.data["bedrooms"] as? Long
-                            val bathrooms = document.data["bathrooms"] as? Long
-
-                            if (bedrooms != null && bathrooms != null &&
-                                (minBeds == null || bedrooms >= minBeds) &&
-                                (minBaths == null || bathrooms >= minBaths)
-                            ) {
-                                posts.add(Post.fromJSON(document.data, document.id))
-                            }
+                            posts.add(Post.fromJSON(document.data, document.id))
                         }
                         callback(posts)
                     } else {
