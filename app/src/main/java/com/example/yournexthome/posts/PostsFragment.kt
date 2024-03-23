@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yournexthome.MainActivity
@@ -23,10 +24,10 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner
 
 class PostsFragment : Fragment() {
     private var postsRecyclerView: RecyclerView? = null
-    private var posts: List<Post>? = null
-    private var adapter = PostsRecyclerAdapter(posts)
+    private var adapter:PostsRecyclerAdapter? = null
     private var progressBar:ProgressBar? = null
 
+    private lateinit var viewModel: PostsViewModel
     private lateinit var spinnerCity: SearchableSpinner
     private lateinit var etMinPriceSearch: EditText
     private lateinit var etMaxPriceSearch: EditText
@@ -43,6 +44,8 @@ class PostsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this)[PostsViewModel::class.java]
+        adapter = PostsRecyclerAdapter(viewModel.posts)
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
         progressBar = view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.VISIBLE
@@ -64,10 +67,10 @@ class PostsFragment : Fragment() {
         postsRecyclerView?.setHasFixedSize(true)
         postsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
+        adapter?.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
-                val post = posts?.get(position)
+                val post = viewModel.posts?.get(position)
                 post?.let {
                     val detailsFragment = PostDetailsFragment.newInstance(post.id)
                     val fragmentManager = activity?.supportFragmentManager ?: return
@@ -126,9 +129,9 @@ class PostsFragment : Fragment() {
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
         Model.instance.getFilteredPosts(null, city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
-            this.posts = filteredPosts
-            adapter.posts = filteredPosts
-            adapter.notifyDataSetChanged()
+            viewModel.posts = filteredPosts
+            adapter?.posts = filteredPosts
+            adapter?.notifyDataSetChanged()
             progressBar?.visibility = View.GONE
         }
     }

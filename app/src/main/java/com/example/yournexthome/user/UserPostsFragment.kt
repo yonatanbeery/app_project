@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.example.yournexthome.R
 import com.example.yournexthome.posts.PostsFragmentDirections
 import com.example.yournexthome.posts.PostsRecyclerAdapter
 import com.example.yournexthome.posts.PostsRecyclerViewActivity
+import com.example.yournexthome.posts.PostsViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner
@@ -30,10 +32,9 @@ class UserPostsFragment : Fragment() {
     val firebaseUser = Firebase.auth.currentUser
 
     private var postsRecyclerView: RecyclerView? = null
-    private var posts: List<Post>? = null
-    private var adapter = PostsRecyclerAdapter(posts)
+    private var adapter:PostsRecyclerAdapter? = null
     private var progressBar: ProgressBar? = null
-
+    private lateinit var viewModel: PostsViewModel
     private lateinit var spinnerCity: SearchableSpinner
     private lateinit var etMinPriceSearch: EditText
     private lateinit var etMaxPriceSearch: EditText
@@ -50,6 +51,8 @@ class UserPostsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this)[PostsViewModel::class.java]
+        adapter = PostsRecyclerAdapter(viewModel.posts)
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
         progressBar = view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.VISIBLE
@@ -71,10 +74,10 @@ class UserPostsFragment : Fragment() {
         postsRecyclerView?.setHasFixedSize(true)
         postsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
+        adapter?.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
-                val post = posts?.get(position)
+                val post = viewModel.posts?.get(position)
                 post?.let {
                     val action = UserPostsFragmentDirections.actionUserPostsFragmentToPostEditFragment(postId = post.id)
                     Navigation.findNavController(view).navigate(action)
@@ -131,9 +134,9 @@ class UserPostsFragment : Fragment() {
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
         Model.instance.getFilteredPosts(firebaseUser?.uid, city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
-            this.posts = filteredPosts
-            adapter.posts = filteredPosts
-            adapter.notifyDataSetChanged()
+            viewModel.posts = filteredPosts
+            adapter?.posts = filteredPosts
+            adapter?.notifyDataSetChanged()
             progressBar?.visibility = View.GONE
         }
     }
