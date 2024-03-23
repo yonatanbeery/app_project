@@ -199,9 +199,6 @@ class PostEditFragment : Fragment() {
     @Override
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.i("res1", requestCode.toString())
-        Log.i("res2", resultCode.toString())
-        Log.i("res3", data.toString())
         if (requestCode==1 && resultCode==-1 && data != null && data.data != null) {
             imageUri = data.data
             postPicture?.setImageURI(imageUri)

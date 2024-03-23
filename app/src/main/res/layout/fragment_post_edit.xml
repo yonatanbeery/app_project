@@ -246,7 +246,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textShortMessage" />
+            android:padding="10dp"
+            android:inputType="textShortMessage"
+            android:textColor="@android:color/black"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -256,10 +258,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:ems="10"
+        android:enabled="false"
         android:inputType="text"
         android:text="Edit your property:"
-        android:textSize="24dp"
         android:textColor="@color/darkGrey"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
