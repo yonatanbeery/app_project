@@ -110,7 +110,6 @@ class UserPostsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCity = parent?.getItemAtPosition(position) as String
                 if (selectedCity != getString(R.string.blank_option)) {
-                    // Handle selected city=
                     Log.d("PostsFragment", "Selected city: $selectedCity")
                 } else {
                     Log.d("PostsFragment", "No city selected")

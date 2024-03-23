@@ -248,7 +248,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:padding="10dp"
-            android:inputType="textShortMessage" />
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

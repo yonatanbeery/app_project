@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="min price"
-            android:inputType="text" />
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="max price"
-            android:inputType="text" />
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="beds"
-            android:inputType="text" />
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="baths"
-            android:inputType="text" />
+            android:inputType="number" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
