@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.yournexthome.MainActivity
 import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
@@ -40,6 +41,7 @@ class UserPostsFragment : Fragment() {
     private lateinit var etBedsSearch: EditText
     private lateinit var etBathsSearch: EditText
     private lateinit var btnSearch: Button
+    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var cities: List<City>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,7 @@ class UserPostsFragment : Fragment() {
         adapter = PostsRecyclerAdapter(viewModel.posts?.value)
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
         progressBar = view.findViewById(R.id.progressBar)
+        swipeRefresh = view.findViewById(R.id.swipeRefresher)
         progressBar?.visibility = View.GONE
         super.onCreate(savedInstanceState)
 
@@ -95,6 +98,14 @@ class UserPostsFragment : Fragment() {
             progressBar?.visibility = View.GONE
         }
 
+        Model.instance.postsLoadingState.observe(viewLifecycleOwner) { state ->
+            swipeRefresh.isRefreshing = state == Model.LoadingState.LOADING
+        }
+
+        swipeRefresh.setOnRefreshListener {
+            refreshPosts()
+        }
+
         return view
     }
     private fun setupCityDropdown() {
@@ -132,17 +143,7 @@ class UserPostsFragment : Fragment() {
     }
 
     private fun refreshPosts() {
-        val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
-            null
-        } else {
-            spinnerCity.selectedItem as String
-        }
-        val minPrice = etMinPriceSearch.text.toString().toIntOrNull()
-        val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
-        val minBeds = etBedsSearch.text.toString().toIntOrNull()
-        val minBaths = etBathsSearch.text.toString().toIntOrNull()
-
-        Model.instance.refreshFilteredPosts(city, minPrice, maxPrice, minBeds, minBaths)
+        Model.instance.refreshPosts()
         progressBar?.visibility = View.GONE
     }
 

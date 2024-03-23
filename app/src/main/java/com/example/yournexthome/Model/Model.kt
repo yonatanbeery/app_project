@@ -2,20 +2,30 @@ package com.example.yournexthome.Model
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.yournexthome.dao.AppLocalDB
 import java.util.concurrent.Executors
 
 class Model private constructor(){
+    enum class LoadingState{
+        LOADING,
+        LOADED
+    }
+
     private var database = AppLocalDB.db
     private var executor = Executors.newSingleThreadExecutor()
     private var firebaseModel = FirebaseModel()
+    val postsLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
 
     companion object {
         val instance: Model = Model()
     }
 
     fun addPost(post: Post, callback: ()-> Unit) {
-        firebaseModel.addPost(post, callback)
+        firebaseModel.addPost(post) {
+            refreshPosts()
+            callback()
+        }
     }
 
     fun updatePost(post: Post, callback: ()-> Unit) {
@@ -31,10 +41,12 @@ class Model private constructor(){
     }
 
 
-    fun refreshFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?) {
+    fun refreshPosts() {
+        postsLoadingState.value = LoadingState.LOADING
+
         var lastUpdated: Long = Post.lastUpdated
 
-        firebaseModel.getFilteredPosts(lastUpdated, city, minPrice, maxPrice, minBeds, minBaths) {list ->
+        firebaseModel.getAllPosts(lastUpdated) { list ->
             executor.execute {
                 var time = lastUpdated
                 for(post in list) {
@@ -44,6 +56,7 @@ class Model private constructor(){
                     }
                 }
                 Post.lastUpdated = time
+                postsLoadingState.postValue(LoadingState.LOADED)
             }
         }
     }
