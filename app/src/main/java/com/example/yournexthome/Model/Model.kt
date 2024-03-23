@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Looper
 import android.util.Log
 import androidx.core.os.HandlerCompat
+import androidx.lifecycle.LiveData
 import com.example.yournexthome.dao.AppLocalDB
 import java.util.concurrent.Executors
 import kotlin.time.Duration.Companion.seconds
@@ -11,7 +12,6 @@ import kotlin.time.Duration.Companion.seconds
 class Model private constructor(){
     private var database = AppLocalDB.db
     private var executor = Executors.newSingleThreadExecutor()
-    private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
     private var firebaseModel = FirebaseModel()
 
     companion object {
@@ -30,7 +30,12 @@ class Model private constructor(){
         firebaseModel.getPost(postId, callback)
     }
 
-    fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?, callback: (List<Post>)-> Unit) {
+    fun getFilteredPosts(creatorId: String?, city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?):LiveData<List<Post>>? {
+        return database.PostDao().gatFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths)
+    }
+
+
+    fun refreshFilteredPosts(city: String?, minPrice: Int?, maxPrice: Int?, minBeds: Int?, minBaths: Int?) {
         var lastUpdated: Long = Post.lastUpdated
 
         firebaseModel.getFilteredPosts(lastUpdated, city, minPrice, maxPrice, minBeds, minBaths) {list ->
@@ -43,10 +48,6 @@ class Model private constructor(){
                     }
                 }
                 Post.lastUpdated = time
-                val posts = database.PostDao().gatFilteredPosts(creatorId, city, minPrice, maxPrice, minBeds, minBaths)
-                mainHandler.post{
-                    callback(posts)
-                }
             }
         }
     }

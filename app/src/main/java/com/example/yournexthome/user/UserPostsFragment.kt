@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yournexthome.MainActivity
 import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
-import com.example.yournexthome.Model.Post
 import com.example.yournexthome.R
-import com.example.yournexthome.posts.PostsFragmentDirections
 import com.example.yournexthome.posts.PostsRecyclerAdapter
 import com.example.yournexthome.posts.PostsRecyclerViewActivity
 import com.example.yournexthome.posts.PostsViewModel
@@ -52,10 +50,10 @@ class UserPostsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this)[PostsViewModel::class.java]
-        adapter = PostsRecyclerAdapter(viewModel.posts)
+        adapter = PostsRecyclerAdapter(viewModel.posts?.value)
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
         progressBar = view.findViewById(R.id.progressBar)
-        progressBar?.visibility = View.VISIBLE
+        progressBar?.visibility = View.GONE
         super.onCreate(savedInstanceState)
 
         spinnerCity = view.findViewById(R.id.spinnerCityPosts)
@@ -67,8 +65,7 @@ class UserPostsFragment : Fragment() {
 
         setupCityDropdown()
         setupCitySelectionListener()
-
-        getPosts()
+        getFilteredPosts()
 
         postsRecyclerView = view.findViewById(R.id.PostsFragmentList)
         postsRecyclerView?.setHasFixedSize(true)
@@ -77,7 +74,7 @@ class UserPostsFragment : Fragment() {
         adapter?.listener = object : PostsRecyclerViewActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("Tag", "row $position")
-                val post = viewModel.posts?.get(position)
+                val post = viewModel.posts?.value?.get(position)
                 post?.let {
                     val action = UserPostsFragmentDirections.actionUserPostsFragmentToPostEditFragment(postId = post.id)
                     Navigation.findNavController(view).navigate(action)
@@ -88,7 +85,13 @@ class UserPostsFragment : Fragment() {
         postsRecyclerView?.adapter = adapter
 
         btnSearch.setOnClickListener {
-            getPosts()
+            refreshPosts()
+        }
+
+        viewModel.posts?.observe(viewLifecycleOwner) {
+            adapter?.posts = it
+            adapter?.notifyDataSetChanged()
+            progressBar?.visibility = View.GONE
         }
 
         return view
@@ -121,7 +124,13 @@ class UserPostsFragment : Fragment() {
         }
     }
 
-    private fun getPosts() {
+    override fun onResume() {
+        super.onResume()
+        progressBar?.visibility = View.VISIBLE
+        refreshPosts()
+    }
+
+    private fun refreshPosts() {
         val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
             null
         } else {
@@ -132,18 +141,21 @@ class UserPostsFragment : Fragment() {
         val minBeds = etBedsSearch.text.toString().toIntOrNull()
         val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
-        Model.instance.getFilteredPosts(firebaseUser?.uid, city, minPrice, maxPrice, minBeds, minBaths) { filteredPosts ->
-            viewModel.posts = filteredPosts
-            adapter?.posts = filteredPosts
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
+        Model.instance.refreshFilteredPosts(city, minPrice, maxPrice, minBeds, minBaths)
+        progressBar?.visibility = View.GONE
     }
 
-    override fun onResume() {
-        super.onResume()
-        progressBar?.visibility = View.VISIBLE
+    fun getFilteredPosts() {
+        val city = if ((spinnerCity.selectedItem as String).isNullOrBlank()) {
+            null
+        } else {
+            spinnerCity.selectedItem as String
+        }
+        val minPrice = etMinPriceSearch.text.toString().toIntOrNull()
+        val maxPrice = etMaxPriceSearch.text.toString().toIntOrNull()
+        val minBeds = etBedsSearch.text.toString().toIntOrNull()
+        val minBaths = etBathsSearch.text.toString().toIntOrNull()
 
-        getPosts()
+        viewModel.posts = Model.instance.getFilteredPosts(firebaseUser?.uid, city, minPrice, maxPrice, minBeds, minBaths)
     }
 }

@@ -258,10 +258,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:ems="10"
+        android:enabled="false"
         android:inputType="text"
         android:text="Post your property:"
-        android:textSize="24dp"
         android:textColor="@color/darkGrey"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
