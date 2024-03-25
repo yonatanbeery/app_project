@@ -11,6 +11,6 @@ data class Result(
     val limit: Int,
     val records_format: String,
     val resource_id: String,
-    val total_estimation_threshold: Any?, // Can be null
+    val total_estimation_threshold: Any?,
     val records: List<City>
 )
