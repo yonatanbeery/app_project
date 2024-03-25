@@ -18,6 +18,7 @@ data class Post(
     val freeText: String,
     val creatorId: String,
     var postPicture: String,
+    var isDeleted: Boolean,
     var lastUpdated: Long? = null) {
 
     companion object{
@@ -33,8 +34,9 @@ data class Post(
             val freeText = json["freeText"].toString()
             val creatorId = json["creatorId"].toString()
             val postPicture = json["postPicture"].toString()
+            val isDeleted = json["isDeleted"].toString()
             val lastUpdated = json["lastUpdated"] as? Timestamp
-            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture, lastUpdated?.seconds?.toLong())
+            return Post(id, city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, creatorId, postPicture, isDeleted.toBoolean(), lastUpdated?.seconds?.toLong())
         }
     }
 
@@ -50,6 +52,7 @@ data class Post(
             "freeText" to freeText,
             "creatorId" to creatorId,
             "postPicture" to postPicture,
+            "isDeleted" to isDeleted,
             "lastUpdated" to FieldValue.serverTimestamp()
         )
     }

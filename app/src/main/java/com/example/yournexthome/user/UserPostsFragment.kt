@@ -164,7 +164,8 @@ class UserPostsFragment : Fragment() {
                 (minPrice == null || post.price > minPrice.toInt()) &&
                 (maxPrice == null || post.price < maxPrice.toInt()) &&
                 (minBeds == null || post.bedrooms > minBeds.toInt()) &&
-                (minBaths == null || post.bathrooms > minBaths.toInt())) {
+                (minBaths == null || post.bathrooms > minBaths.toInt()) && !post.isDeleted
+            ) {
                 filteredPosts.add(post)
             }
         }

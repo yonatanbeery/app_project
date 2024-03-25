@@ -67,6 +67,20 @@ class FirebaseModel {
             }
     }
 
+    fun deletePost(postId: String, callback: () -> Unit) {
+        db.collection(POSTS_COLLECTION_NAME)
+            .document(postId)
+            .update(mapOf(
+                "isDeleted" to true,
+                "lastUpdated" to Timestamp(System.currentTimeMillis() / 1000, 0)
+
+            ))
+            .addOnSuccessListener { documentReference ->
+                callback()
+            }
+    }
+
+
     fun getPost(postId: String, callback: (Post?) -> Unit) {
         db.collection(POSTS_COLLECTION_NAME)
             .document(postId)
