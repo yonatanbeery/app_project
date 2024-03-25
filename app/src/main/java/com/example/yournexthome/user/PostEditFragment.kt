@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.yournexthome.MainActivity
 import com.example.yournexthome.Model.City
 import com.example.yournexthome.Model.Model
@@ -68,6 +69,7 @@ class PostEditFragment : Fragment() {
         postPicture!!.setOnClickListener(::setPostPicture)
         postId = arguments?.let { PostDetailsFragmentArgs.fromBundle(it).postId }
         val updateBtn: Button = view.findViewById(R.id.post_btn)
+        val deleteBtn: Button = view.findViewById(R.id.delete_post_btn)
         progressBar = view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.GONE
 
@@ -79,6 +81,7 @@ class PostEditFragment : Fragment() {
         }
 
         updateBtn.setOnClickListener(::updatePost)
+        deleteBtn.setOnClickListener(::deletePost)
 
         return view
     }
@@ -108,6 +111,15 @@ class PostEditFragment : Fragment() {
             }
         } else {
             errorMessageTextView?.text = "Please fill all mandatory values"
+        }
+    }
+
+    fun deletePost(view: View) {
+        if (postId != null) {
+            Model.instance.deletePost(postId!!) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_postsFragment)
+                progressBar?.visibility = View.GONE
+            }
         }
     }
 

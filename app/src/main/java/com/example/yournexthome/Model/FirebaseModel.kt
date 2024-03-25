@@ -67,6 +67,17 @@ class FirebaseModel {
             }
     }
 
+    fun deletePost(postId: String, callback: () -> Unit) {
+        db.collection(POSTS_COLLECTION_NAME)
+            .document(postId)
+            .delete()
+            .addOnSuccessListener {
+                Log.d("TAG", "DocumentSnapshot successfully deleted")
+                callback()
+            }
+    }
+
+
     fun getPost(postId: String, callback: (Post?) -> Unit) {
         db.collection(POSTS_COLLECTION_NAME)
             .document(postId)

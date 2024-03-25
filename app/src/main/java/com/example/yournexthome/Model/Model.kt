@@ -32,6 +32,10 @@ class Model private constructor(){
         firebaseModel.updatePost(post, callback)
     }
 
+    fun deletePost(postId: String, callback: ()-> Unit) {
+        firebaseModel.deletePost(postId, callback)
+    }
+
     fun getPost(postId: String, callback: (Post?)-> Unit) {
         firebaseModel.getPost(postId, callback)
     }
