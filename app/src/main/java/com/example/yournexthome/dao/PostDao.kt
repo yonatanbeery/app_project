@@ -10,7 +10,7 @@ import com.example.yournexthome.Model.Post
 
 @Dao
 interface PostDao {
-    @Query("SELECT * FROM Post WHERE (:creatorId IS NULL OR creatorId = :creatorId)")
+    @Query("SELECT * FROM Post WHERE (:creatorId IS NULL OR creatorId = :creatorId) AND isDeleted != true")
     fun gatAllPosts(creatorId: String?) : LiveData<List<Post>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

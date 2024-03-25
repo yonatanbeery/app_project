@@ -116,8 +116,10 @@ class PostEditFragment : Fragment() {
 
     fun deletePost(view: View) {
         if (postId != null) {
+            progressBar?.visibility = View.VISIBLE
             Model.instance.deletePost(postId!!) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_postsFragment)
+                Model.instance.refreshPosts()
+                Navigation.findNavController(view).navigate(R.id.action_global_userPostsFragment)
                 progressBar?.visibility = View.GONE
             }
         }
@@ -184,7 +186,8 @@ class PostEditFragment : Fragment() {
             phoneTextView?.text.toString(),
             freeTextTextView?.text.toString(),
             creatorId!!,
-            post!!.postPicture
+            post!!.postPicture,
+            false
         )
         Model.instance.updatePost(updatedPost) {
             showSuccessMessage(view)

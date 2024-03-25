@@ -94,7 +94,7 @@ class NewPostFragment : Fragment() {
                 errorMessageTextView?.text = ""
                 val randomImageKey = UUID.randomUUID().toString()
                 Model.instance.uploadImage("posts", imageUri!!, randomImageKey) {
-                    val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, firebaseUser!!.uid, randomImageKey)
+                    val post = Post("", city, price.toInt(), areaSize.toInt(), bedrooms.toInt(), bathrooms.toInt(), name, phone, freeText, firebaseUser!!.uid, randomImageKey, false)
                     Model.instance.addPost(post) {
                         Navigation.findNavController(view).navigate(R.id.action_global_postsFragment)
                         progressBar?.visibility = View.GONE
